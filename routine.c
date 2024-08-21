@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:02:27 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/21 16:44:48 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/21 16:51:12 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,15 @@ void	*routine(void *data)
 	int		i;
 
 	table = (t_table *)data;
-	i = ?;
+	i = table->philo;
 	while (1)
 	{
-		if (table->philo[i]->fork_available == true && table->philo[i + 1]->fork_available == true)
+		if (table->philo[i]->fork_available == true
+			&& table->philo[i + 1]->fork_available == true
+			&& table->philo[i]->dead == false)
 			eat_sleep(table, i);
 		printf("%d %d is thinking\n", gettimeofday, table->philo[i]);
+		if (table->philo[i]->last_meal > table->time_to_die)
+			table->philo[i]->dead = true;
 	}
-	if (philo->last_meal > philo->time_to_die)
-		philo->dead = true;
-	else if (philo->meals_eaten == philo->meals_required)
-		return (EXIT_SUCCESS);
 }
