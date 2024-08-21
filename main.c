@@ -6,34 +6,37 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 10:55:23 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/21 12:53:50 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/21 16:12:21 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	create_threads(t_table *table)
+static void	create_threads(t_table *table)
 {
 	int	i;
-
+	
+	if (pthread_create(&table->observer, NULL, &observer_routine, &table) != 0)
+			free_and_exit(table, "failed to create threads", 1);
 	i = 0;
 	while (i < table->philos_total)
 	{
-		if (pthread_create(&table->philo[i]->thread, NULL, &routine, ) != 0)
+		if (pthread_create(&table->philo[i]->thread, NULL, &routine, &table) != 0)
+			free_and_exit(table, "failed to create threads", 1);
 		i++;
 	}
 }
 
-void	init_philo(t_philo *philo, int i)
+static int	init_philo(t_philo *philo, int i)
 {
 	philo = malloc(sizeof(t_philo));
 	if (philo == NULL)
-		free_and_exit(); //make this later
+		return (NULL);
 	memset(philo, 0, sizeof(t_philo));
 	philo->number = i;
 }
 
-void	init_table(t_table *table, int argc, char **argv)
+static void	init_table(t_table *table, int argc, char **argv)
 {
 	int	i;
 	
@@ -50,7 +53,8 @@ void	init_table(t_table *table, int argc, char **argv)
 	i = 0;
 	while(i < table->philos_total)
 	{
-		init_philo(table->philo[i], i);
+		if (init_philo(table->philo[i], i) == NULL)
+			free_and_exit(table, "failed to init philos", 1);
 		i++;
 	}
 }
@@ -66,7 +70,7 @@ int main(int argc, char **argv)
 	init_table(&table, argc, argv);
 	create_threads(&table);
 	pthread_mutex_init(&mutex, NULL);
-	routine(table, argc);
+	routine(table);
 	pthread_mutex_destroy(&mutex);
 	return (EXIT_SUCCESS);
 }

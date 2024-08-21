@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:12:19 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/21 11:47:26 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/21 15:43:54 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,8 @@ typedef struct	s_table
 	unsigned int	meals_required;
 	t_philo			**philo;
 }	t_table;
+
+void	*routine(void *data);
+void	*observer_routine(void *data)
 
 #endif
