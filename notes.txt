@@ -1,0 +1,1 @@
+maybe need to check if input formats are valid (that everything is a number)
