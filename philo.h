@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:12:19 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/21 16:50:04 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/21 17:02:51 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@ typedef struct s_philo
 	pthread_mutex_t fork;
 	//pthread_mutex_t next_fork;
 	unsigned int	fork_available;
+	unsigned int	thinking;
+	unsigned int	sleeping;
+	unsigned int	eating;
 	unsigned int	dead;
 	size_t 			last_meal;
 	unsigned int	meals_eaten;
