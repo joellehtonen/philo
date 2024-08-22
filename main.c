@@ -6,37 +6,46 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 10:55:23 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/22 10:16:34 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/22 12:57:38 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	create_threads(t_table *table)
+static int	create_threads(t_table *table)
 {
 	int	i;
 	
 	if (pthread_create(&table->observer, NULL, &observer_routine, &table) != 0)
-			free_and_exit(table, "failed to create threads", 1);
+	{
+		free_and_exit(table, "failed to create threads", 1);
+		return (EXIT_FAILURE);
+	}
 	i = 0;
 	while (i < table->philos_total)
 	{
 		if (pthread_create(&table->philo[i]->thread, NULL, &routine, &table) != 0)
+		{
 			free_and_exit(table, "failed to create threads", 1);
+			return (EXIT_FAILURE);
+		}
 		i++;
 	}
+	return (EXIT_SUCCESS);
 }
 
 static int	init_philo(t_philo *philo, int i)
 {
 	philo = malloc(sizeof(t_philo));
 	if (philo == NULL)
-		return (NULL);
+		return (EXIT_FAILURE);
 	memset(philo, 0, sizeof(t_philo));
+	pthread_mutex_init(&philo->fork, NULL)
 	philo->number = i;
+	return (EXIT_SUCCESS)
 }
 
-static void	init_table(t_table *table, int argc, char **argv)
+static int	init_table(t_table *table, int argc, char **argv)
 {
 	int	i;
 	
@@ -53,10 +62,14 @@ static void	init_table(t_table *table, int argc, char **argv)
 	i = 0;
 	while(i < table->philos_total)
 	{
-		if (init_philo(table->philo[i], i) == NULL)
+		if (init_philo(table->philo[i], i) == EXIT_FAILURE)
+		{
 			free_and_exit(table, "failed to init philos", 1);
+			return (EXIT_FAILURE);
+		}
 		i++;
 	}
+	return (EXIT_SUCCESS);
 }
 
 int main(int argc, char **argv)
@@ -66,9 +79,12 @@ int main(int argc, char **argv)
 	
 	if (argc != 5 || argc != 6)
 		return (EXIT_FAILURE);
-	init_table(&table, argc, argv);
-	pthread_mutex_init(&table->mutex, NULL);
-	create_threads(&table);
+	if (init_table(&table, argc, argv) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (pthread_mutex_init(&table->mutex, NULL) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (create_threads(&table) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	routine(table);
 	pthread_mutex_destroy(&table->mutex);
 	return (EXIT_SUCCESS);
