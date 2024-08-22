@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 10:55:23 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/21 16:12:21 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/22 10:16:34 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,14 @@ static void	init_table(t_table *table, int argc, char **argv)
 int main(int argc, char **argv)
 {
 	int				number;
-	pthread_mutex_t	mutex;
 	t_table			*table;
 	
 	if (argc != 5 || argc != 6)
 		return (EXIT_FAILURE);
 	init_table(&table, argc, argv);
+	pthread_mutex_init(&table->mutex, NULL);
 	create_threads(&table);
-	pthread_mutex_init(&mutex, NULL);
 	routine(table);
-	pthread_mutex_destroy(&mutex);
+	pthread_mutex_destroy(&table->mutex);
 	return (EXIT_SUCCESS);
 }

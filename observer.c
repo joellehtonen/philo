@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:48:52 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/21 16:47:55 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/22 10:57:13 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@ static void	wellfare_check(t_table *table, int number)
 {
 	if (table->philo[number]->last_meal > table->time_to_die)
 	{
-		printf("%d %d died\n", gettimeofday, table->philo[number]);
+		state_writer(table, table->philo[number], "died");
 		free_and_exit(table, NULL, 0);
 	}
+	return ;
 }
 
 void	*observer_routine(void *data)
@@ -37,7 +38,7 @@ void	*observer_routine(void *data)
 			if (table->philo[number]->meals_eaten > table->meals_required)
 				counter++;
 			if (counter == table->philos_total)
-				free_and_exit(table, "all philos have finished eating", 0);
+				free_and_exit(table, NULL, 0);
 		}
 		if (number == table->philos_total)
 		{

@@ -6,59 +6,64 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:02:27 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/21 17:04:04 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/22 10:54:28 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	eat_sleep(t_table *table, int i)
+void	eat_sleep(t_table *table, int index)
 {
-	pthread_mutex_lock(&table->philo[i]->fork);
-	table->philo[i]->fork_available = false;
-	printf("%d %d has taken a fork\n", gettimeofday, table->philo[i]);
-	pthread_mutex_lock(&table->philo[i + 1]->fork);
-	table->philo[i + i]->fork_available = false;
-	printf("%d %d has taken a fork\n", gettimeofday, table->philo[i]);
-	printf("%d %d is eating\n", gettimeofday, table->philo[i]);
-	table->philo[i]->eating = true;
+	pthread_mutex_lock(&table->philo[index]->fork);
+	table->philo[index]->fork_available = false;
+	state_writer(table, index, "has taken a fork");
+	pthread_mutex_lock(&table->philo[index + 1]->fork);
+	table->philo[index + 1]->fork_available = false;
+	state_writer(table, index, "has taken a fork");
+	state_writer(table, index, "is eating");
+	table->philo[index]->eating = true;
 	usleep(table->time_to_eat);
-	table->philo[i]->eating = false;
-	table->philo[i]->last_meal = 0;
-	table->philo[i]->meals_eaten++;
-	pthread_mutex_unlock(&table->philo[i]->fork);
-	table->philo[i]->fork_available = true;
-	pthread_mutex_unlock(&table->philo[i + 1]->fork);
-	table->philo[i + 1]->fork_available = true;
-	printf("%d %d is sleeping\n", gettimeofday, table->philo[i] );
-	table->philo[i]->sleeping = true;
+	table->philo[index]->eating = false;
+	table->philo[index]->last_meal = 0;
+	table->philo[index]->meals_eaten++;
+	pthread_mutex_unlock(&table->philo[index]->fork);
+	table->philo[index]->fork_available = true;
+	pthread_mutex_unlock(&table->philo[index + 1]->fork);
+	table->philo[index + 1]->fork_available = true;
+	state_writer(table, index, "is sleeping");
+	table->philo[index]->sleeping = true;
 	usleep(table->time_to_sleep);
-	table->philo[i]->sleeping = false;
+	table->philo[index]->sleeping = false;
 }
 
 
 void	*routine(void *data)
 {
 	t_table *table;
-	int		i;
+	int		index;
 
 	table = (t_table *)data;
-	i = table->philo;
+	index = table->philo;
 	while (1)
 	{
-		if (table->philo[i]->fork_available == true
-			&& table->philo[i + 1]->fork_available == true
-			&& table->philo[i]->dead == false)
+		if (table->philo[index]->fork_available == true
+			&& table->philo[index + 1]->fork_available == true
+			&& table->philo[index]->dead == false)
 		{
-			table->philo[i]->thinking = false;
-			eat_sleep(table, i);
+			table->philo[index]->thinking = false;
+			eat_sleep(table, index);
 		}
-		if (table->philo[i]->thinking == false)
+		if (table->philo[index]->thinking == false)
 		{
-			printf("%d %d is thinking\n", gettimeofday, table->philo[i]);
-			table->philo[i]->thinking = true;
+			state_writer(table, index, "is thinking");
+			table->philo[index]->thinking = true;
 		}
-		if (table->philo[i]->last_meal > table->time_to_die)
-			table->philo[i]->dead = true;
+		// if (table->philo[index]->last_meal > table->time_to_die)
+		// {
+		// 	table->philo[index]->dead = true;
+		// 	state_writer(table, index, "died");
+		// }
+		if (table->dead == true)
+			return ;
 	}
 }
