@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/19 11:12:19 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/22 10:51:27 by jlehtone         ###   ########.fr       */
+/*   Created: 2024/08/23 13:23:41 by jlehtone          #+#    #+#             */
+/*   Updated: 2024/08/23 13:23:43 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <sys/time.h> //for time
 # include <stdio.h> //for printing
 # include <unistd.h> //for usleep
+# include <string.h> //for memset
+# include <limits.h> //for INT_MAX
 # define false 0
 # define true 1
 
@@ -25,11 +27,10 @@ typedef struct s_philo
 	pthread_t		thread;
 	unsigned int	number;
 	pthread_mutex_t fork;
-	//pthread_mutex_t next_fork;
 	unsigned int	fork_available;
 	unsigned int	thinking;
-	unsigned int	sleeping;
-	unsigned int	eating;
+	//unsigned int	sleeping;
+	//unsigned int	eating;
 	unsigned int	dead;
 	size_t 			last_meal;
 	unsigned int	meals_eaten;
@@ -40,15 +41,20 @@ typedef struct	s_table
 	pthread_t		observer;
 	pthread_mutex_t	mutex;
 	unsigned int	philos_total;
+	unsigned int	philo_index;
 	size_t			time_to_die;
 	size_t			time_to_eat;
 	size_t			time_to_sleep;
 	unsigned int	meals_required;
-	unsigned int	dead;
+	unsigned int	exit;
 	t_philo			**philo;
 }	t_table;
 
-void	*routine(void *data);
-void	*observer_routine(void *data)
+void		*routine(void *data);
+void		*observer_routine(void *data);
+void		state_writer(t_table *table, int philo, char *str);
+long long	timestamp(t_table *table);
+void		free_and_exit(t_table *table, char *message);
+int			ft_atoi(const char *str);
 
 #endif
