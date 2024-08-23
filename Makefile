@@ -13,17 +13,17 @@ OBJECTS	= $(SOURCES:.c=.o)
 all: $(NAME)
 
 $(SRC_DIR)%.o: $(SRC_DIR)%.c
-	$(CC) $(FLAGS) -o $@ -c $<
+	$(CC) $(FLAGS) -c $< -o $@
 
 $(NAME): $(OBJECTS)
 	$(CC) $(FLAGS) $(OBJECTS) -o $(NAME)
 
 clean:
-	rm -rf $(OBJECTS)
+	rm -f $(OBJECTS)
 
 fclean:	clean
-	rm -rf $(NAME)
+	rm -f $(NAME)
 
 re: fclean all
 
-.PHONY: all bonus clean fclean re
+.PHONY: all bonus clean fclean reg
