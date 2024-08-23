@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:54:30 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/23 13:27:09 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/23 15:11:54 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void	free_memory(t_table *table)
 		free(table->philo[i]);
 		i++;
 	}
+	free(table->philo);
 	free(table);
 }
 

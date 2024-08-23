@@ -1,6 +1,6 @@
 NAME	= philo
 CC		= cc
-FLAGS	= -Wall -Wextra -Werror -pthread
+FLAGS	= -Wall -Wextra -Werror -pthread -g
 SOURCES	=	main.c \
 			routine.c \
 			observer.c \
