@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 10:55:23 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/23 13:27:01 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/23 14:10:33 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	create_threads(t_table *table)
 	
 	if (pthread_create(&table->observer, NULL, &observer_routine, &table) != 0)
 	{
-		free_and_exit(table, "failed to create observer thread");
+		free_and_exit(table, "Error. Failed to create an observer thread");
 		return (EXIT_FAILURE);
 	}
 	i = 0;
@@ -26,7 +26,7 @@ static int	create_threads(t_table *table)
 	{
 		if (pthread_create(&table->philo[i]->thread, NULL, &routine, &table) != 0)
 		{
-			free_and_exit(table, "failed to create philo threads");
+			free_and_exit(table, "Error. Failed to create philo threads");
 			return (EXIT_FAILURE);
 		}
 		table->philo[i]->fork_available = true;
@@ -40,13 +40,13 @@ static int	init_philo(t_table *table, t_philo *philo, int i)
 	philo = malloc(sizeof(t_philo));
 	if (philo == NULL)
 	{
-		free_and_exit(table, "failed to malloc a philo");
+		free_and_exit(table, "Error. Failed to malloc philos");
 		return (EXIT_FAILURE);
 	}
 	memset(philo, 0, sizeof(t_philo));
 	if (pthread_mutex_init(&philo->fork, NULL) != 0)
 	{
-		free_and_exit(table, "failed to init a fork");
+		free_and_exit(table, "Error. Failed to init a fork");
 		return (EXIT_FAILURE);
 	}
 	philo->number = i;
@@ -60,7 +60,7 @@ static int	init_table(t_table *table, int argc, char **argv)
 	table = malloc(sizeof(t_table));
 	if (table == NULL)
 	{
-		free_and_exit(table, "failed to malloc the table");
+		free_and_exit(table, "Error. Failed to malloc the table");
 		return (EXIT_FAILURE);
 	}
 	memset(table, 0, sizeof(t_table));
@@ -86,7 +86,13 @@ int main(int argc, char **argv)
 	
 	table = NULL;
 	if (argc < 5 || argc > 6)
+	{
+		printf("Error. Invalid amount of arguments\n");
+		printf(" 1. Number of philosophers\n");
+		printf(" 2. Time to die\n 3. Time to eat\n 4. Time to sleep\n");
+		printf(" 5. How many times each philosopher must eat (optional)\n");
 		return (EXIT_FAILURE);
+	}
 	if (init_table(table, argc, argv) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	if (pthread_mutex_init(&table->mutex, NULL) == EXIT_FAILURE)

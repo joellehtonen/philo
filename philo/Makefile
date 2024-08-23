@@ -1,18 +1,17 @@
 NAME	= philo
 CC		= cc
 FLAGS	= -Wall -Wextra -Werror -pthread
-SRC_DIR = philo/
-SOURCES	=	$(SRC_DIR)main.c \
-			$(SRC_DIR)routine.c \
-			$(SRC_DIR)observer.c \
-			$(SRC_DIR)writer.c \
-			$(SRC_DIR)exit.c \
-			$(SRC_DIR)utils.c
+SOURCES	=	main.c \
+			routine.c \
+			observer.c \
+			writer.c \
+			exit.c \
+			utils.c
 OBJECTS	= $(SOURCES:.c=.o)
 
 all: $(NAME)
 
-$(SRC_DIR)%.o: $(SRC_DIR)%.c
+%.o: %.c
 	$(CC) $(FLAGS) -c $< -o $@
 
 $(NAME): $(OBJECTS)
@@ -26,4 +25,4 @@ fclean:	clean
 
 re: fclean all
 
-.PHONY: all bonus clean fclean reg
+.PHONY: all bonus clean fclean remake
