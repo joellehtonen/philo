@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 10:55:23 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/23 15:22:35 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/23 15:58:09 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@ static int	create_threads(t_table *table)
 			return (EXIT_FAILURE);
 		}
 		table->philo[i]->fork_available = true;
+		// pthread_mutex_lock(&table->mutex);
+		// printf("created thread %d\n", i);
+		// pthread_mutex_unlock(&table->mutex);
 		i++;
 	}
 	if (pthread_create(&table->observer, NULL, &observer_routine, &table) != 0)
@@ -32,6 +35,7 @@ static int	create_threads(t_table *table)
 		free_and_exit(table, "Error. Failed to create an observer thread");
 		return (EXIT_FAILURE);
 	}
+	table->ready = 1;
 	return (EXIT_SUCCESS);
 }
 
@@ -50,6 +54,7 @@ static int	init_philo(t_table *table, int i)
 		return (EXIT_FAILURE);
 	}
 	table->philo[i]->number = i;
+	//printf("inited philo %d\n", i);
 	return (EXIT_SUCCESS);
 }
 

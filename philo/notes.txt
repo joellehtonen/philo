@@ -1,0 +1,11 @@
+maybe need to check if input formats are valid (that everything is a number)
+
+make sure that gettimeofday is giving time in right format (needs to be in milliseconds)
+
+NOT ALLOWED TO USE EXIT
+
+every secon philo starts by thinking
+
+DONE fix index with last philo (cannot take next fork, must take first)
+
+fix timestamp return path in case of error

@@ -6,19 +6,19 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:02:27 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/23 13:27:51 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/23 16:01:44 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	eat_sleep(t_table *table, int index)
+static void	eat_sleep(t_table *table, int index, int next_index)
 {
 	pthread_mutex_lock(&table->philo[index]->fork);
 	table->philo[index]->fork_available = false;
 	state_writer(table, index, "has taken a fork");
-	pthread_mutex_lock(&table->philo[index + 1]->fork);
-	table->philo[index + 1]->fork_available = false;
+	pthread_mutex_lock(&table->philo[next_index]->fork);
+	table->philo[next_index]->fork_available = false;
 	state_writer(table, index, "has taken a fork");
 	state_writer(table, index, "is eating");
 	//table->philo[index]->eating = true;
@@ -28,8 +28,8 @@ void	eat_sleep(t_table *table, int index)
 	table->philo[index]->meals_eaten++;
 	pthread_mutex_unlock(&table->philo[index]->fork);
 	table->philo[index]->fork_available = true;
-	pthread_mutex_unlock(&table->philo[index + 1]->fork);
-	table->philo[index + 1]->fork_available = true;
+	pthread_mutex_unlock(&table->philo[next_index]->fork);
+	table->philo[next_index]->fork_available = true;
 	state_writer(table, index, "is sleeping");
 	//table->philo[index]->sleeping = true;
 	usleep(table->time_to_sleep);
@@ -41,32 +41,35 @@ void	*routine(void *data)
 {
 	t_table 		*table;
 	unsigned int	index;
+	unsigned int	next_index;
 
 	table = (t_table *)data;
 	pthread_mutex_lock(&table->mutex);
 	index = table->philo_index;
 	table->philo_index++;
 	pthread_mutex_unlock(&table->mutex);
-	while (1)
+	if (index == table->philos_total - 1)
+		next_index = 0;
+	else
+		next_index = index + 1;
+	while (true)
 	{
-		if (table->philo[index]->fork_available == true
-			&& table->philo[index + 1]->fork_available == true
-			&& table->philo[index]->dead == false)
+		while (table->ready == 1)
 		{
-			table->philo[index]->thinking = false;
-			eat_sleep(table, index);
+			if (table->philo[index]->fork_available == true
+				&& table->philo[next_index]->fork_available == true
+				&& table->philo[index]->dead == false)
+			{
+				table->philo[index]->thinking = false;
+				eat_sleep(table, index, next_index);
+			}
+			if (table->philo[index]->thinking == false)
+			{
+				state_writer(table, index, "is thinking");
+				table->philo[index]->thinking = true;
+			}
+			if (table->exit == true)
+				return (NULL);
 		}
-		if (table->philo[index]->thinking == false)
-		{
-			state_writer(table, index, "is thinking");
-			table->philo[index]->thinking = true;
-		}
-		// if (table->philo[index]->last_meal > table->time_to_die)
-		// {
-		// 	table->philo[index]->dead = true;
-		// 	state_writer(table, index, "died");
-		// }
-		if (table->exit == true)
-			return (NULL);
 	}
 }

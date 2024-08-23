@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 13:23:41 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/23 13:27:58 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/23 16:01:31 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@
 # include <unistd.h> //for usleep
 # include <string.h> //for memset
 # include <limits.h> //for INT_MAX
-# define false 0
-# define true 1
+# include <stdbool.h> //for true and false
 
 typedef struct s_philo
 {
@@ -47,6 +46,7 @@ typedef struct	s_table
 	size_t			time_to_sleep;
 	unsigned int	meals_required;
 	unsigned int	exit;
+	unsigned int	ready;
 	t_philo			**philo;
 }	t_table;
 

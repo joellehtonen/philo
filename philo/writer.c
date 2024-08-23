@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 10:09:25 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/23 13:27:44 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/23 16:03:07 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ long long	timestamp(t_table *table)
 	long long		milliseconds;
 	
 	if (gettimeofday(&time, NULL) != 0)
+	{
 		free_and_exit(table, "Error. Gettimeofday failed");
+		return (0);
+	}
 	milliseconds = (time.tv_sec * 1000 + time.tv_sec / 1000);
 	return (milliseconds);
 }

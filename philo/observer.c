@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:48:52 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/23 13:27:34 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/23 16:02:11 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	*observer_routine(void *data)
 	
 	table = (t_table *)data;
 	number = 0;
-	while (1)
+	while (true)
 	{
 		wellfare_check(table, number);
 		if (table->meals_required > 0)
