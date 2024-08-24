@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 13:23:41 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/23 16:01:31 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/24 11:45:14 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ typedef struct s_philo
 	pthread_t		thread;
 	unsigned int	number;
 	pthread_mutex_t fork;
-	unsigned int	fork_available;
-	unsigned int	thinking;
+	//unsigned int	fork_available;
+	//unsigned int	thinking;
 	//unsigned int	sleeping;
 	//unsigned int	eating;
 	unsigned int	dead;
@@ -47,13 +47,14 @@ typedef struct	s_table
 	unsigned int	meals_required;
 	unsigned int	exit;
 	unsigned int	ready;
+	size_t			start_time;
 	t_philo			**philo;
 }	t_table;
 
 void		*routine(void *data);
 void		*observer_routine(void *data);
 void		state_writer(t_table *table, int philo, char *str);
-long long	timestamp(t_table *table);
+size_t		timestamp(void);
 void		free_and_exit(t_table *table, char *message);
 int			ft_atoi(const char *str);
 

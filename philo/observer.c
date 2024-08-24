@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:48:52 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/23 16:02:11 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/24 10:37:49 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	wellfare_check(t_table *table, int number)
 {
 	long long	time;
 
-	time = timestamp(table);
+	time = timestamp();
 	if ((time - table->philo[number]->last_meal) >= table->time_to_die)
 	{
 		state_writer(table, table->philo[number]->number, "died");

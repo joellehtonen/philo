@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 10:55:23 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/23 15:58:09 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/24 11:50:39 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,6 @@ static int	create_threads(t_table *table)
 			free_and_exit(table, "Error. Failed to create a philo thread");
 			return (EXIT_FAILURE);
 		}
-		table->philo[i]->fork_available = true;
-		// pthread_mutex_lock(&table->mutex);
-		// printf("created thread %d\n", i);
-		// pthread_mutex_unlock(&table->mutex);
 		i++;
 	}
 	if (pthread_create(&table->observer, NULL, &observer_routine, &table) != 0)
@@ -53,8 +49,8 @@ static int	init_philo(t_table *table, int i)
 		free_and_exit(table, "Error. Failed to init a fork");
 		return (EXIT_FAILURE);
 	}
-	table->philo[i]->number = i;
-	//printf("inited philo %d\n", i);
+	table->philo[i]->number = i + 1;
+	//printf("inited philo %d\n", i + 1);
 	return (EXIT_SUCCESS);
 }
 
@@ -111,6 +107,7 @@ int main(int argc, char **argv)
 	}
 	if (init_table(&table, argc, argv) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
+	table->start_time = timestamp();
 	if (pthread_mutex_init(&table->mutex, NULL) == EXIT_FAILURE)
 	{
 		printf("Error. Failed to init the general mutex\n");
