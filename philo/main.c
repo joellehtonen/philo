@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 10:55:23 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/24 14:47:59 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/24 15:09:59 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static int	create_threads(t_table *table)
 	while (i < table->philos_total)
 	{
 		if (pthread_create(&table->philo[i]->thread, NULL, &routine, table->philo[i]) != 0)
-		//if (pthread_create(&table->philo[i]->thread, NULL, &routine, table) != 0)
 		{
 			free_and_exit(table, "Error. Failed to create a philo thread");
 			return (EXIT_FAILURE);
@@ -50,11 +49,11 @@ static int	init_philo(t_table *table, int i)
 		free_and_exit(table, "Error. Failed to init a fork");
 		return (EXIT_FAILURE);
 	}
-	// if (pthread_mutex_init(&table->philo[i]->other_fork, NULL) != 0)
-	// {
-	// 	free_and_exit(table, "Error. Failed to init a fork");
-	// 	return (EXIT_FAILURE);
-	// }
+	if (pthread_mutex_init(&table->philo[i]->other_fork, NULL) != 0)
+	{
+		free_and_exit(table, "Error. Failed to init a fork");
+		return (EXIT_FAILURE);
+	}
 	table->philo[i]->number = i + 1;
 	table->philo[i]->table = table;
 	return (EXIT_SUCCESS);

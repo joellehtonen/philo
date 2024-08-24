@@ -6,13 +6,13 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:48:52 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/24 14:40:24 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/24 15:15:13 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	wellfare_check(t_table *table, int number)
+static void	welfare_check(t_table *table, int number)
 {
 	size_t	time;
 
@@ -37,7 +37,7 @@ void	*observer_routine(void *data)
 	counter = 0;
 	while (table->exit == false)
 	{
-		wellfare_check(table, number);
+		welfare_check(table, number);
 		if (table->meals_required > 0)
 		{
 			if (table->philo[number]->meals_eaten > table->meals_required)

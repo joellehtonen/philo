@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 13:23:41 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/24 14:47:19 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/24 15:09:22 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ typedef struct	s_philo
 	pthread_t		thread;
 	unsigned int	number;
 	pthread_mutex_t fork;
-	//pthread_mutex_t other_fork;
+	pthread_mutex_t other_fork;
 	//unsigned int	fork_available;
 	//unsigned int	thinking;
 	//unsigned int	sleeping;
