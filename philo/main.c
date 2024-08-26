@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 10:55:23 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/24 15:09:59 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/26 11:44:14 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ static int	create_threads(t_table *table)
 	{
 		if (pthread_create(&table->philo[i]->thread, NULL, &routine, table->philo[i]) != 0)
 		{
-			free_and_exit(table, "Error. Failed to create a philo thread");
+			error_writer(table, "Failed to create a philo thread");
 			return (EXIT_FAILURE);
 		}
 		i++;
 	}
 	if (pthread_create(&table->observer, NULL, &observer_routine, table) != 0)
 	{
-		free_and_exit(table, "Error. Failed to create an observer thread");
+		error_writer(table, "Failed to create an observer thread");
 		return (EXIT_FAILURE);
 	}
 	table->ready = 1;
@@ -40,20 +40,20 @@ static int	init_philo(t_table *table, int i)
 	table->philo[i] = malloc(sizeof(t_philo));
 	if (table->philo[i] == NULL)
 	{
-		free_and_exit(table, "Error. Failed to malloc for philos");
+		error_writer(table, "Failed to malloc for philos");
 		return (EXIT_FAILURE);
 	}
 	memset(table->philo[i], 0, sizeof(t_philo));
 	if (pthread_mutex_init(&table->philo[i]->fork, NULL) != 0)
 	{
-		free_and_exit(table, "Error. Failed to init a fork");
+		error_writer(table, "Failed to init a fork");
 		return (EXIT_FAILURE);
 	}
-	if (pthread_mutex_init(&table->philo[i]->other_fork, NULL) != 0)
-	{
-		free_and_exit(table, "Error. Failed to init a fork");
-		return (EXIT_FAILURE);
-	}
+	// if (pthread_mutex_init(&table->philo[i]->other_fork, NULL) != 0)
+	// {
+	// 	error_writer(table, "Failed to init a fork");
+	// 	return (EXIT_FAILURE);
+	// }
 	table->philo[i]->number = i + 1;
 	table->philo[i]->table = table;
 	return (EXIT_SUCCESS);
@@ -64,7 +64,7 @@ static int	parse_input(t_table ***table, int argc, char **argv)
 	(**table)->philos_total = ft_atoi(argv[1]);
 	if ((**table)->philos_total > 200)
 	{
-		free_and_exit(**table, "Error. Too many philosophers");
+		error_writer(**table, "Too many philosophers");
 		return (EXIT_FAILURE);
 	}
 	(**table)->time_to_die = ft_atoi(argv[2]) * 1000;
@@ -82,16 +82,16 @@ static int	init_table(t_table **table, int argc, char **argv)
 	*table = malloc(sizeof(t_table));
 	if (*table == NULL)
 	{
-		free_and_exit(*table, "Error. Failed to malloc for the table");
+		error_writer(*table, "Failed to malloc for the table");
 		return (EXIT_FAILURE);
 	}
 	memset(*table, 0, sizeof(t_table));
 	if (parse_input(&table, argc, argv) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	(*table)->philo = malloc(sizeof(t_philo) * (*table)->philos_total);
+	(*table)->philo = malloc(sizeof(t_philo *) * (*table)->philos_total);
 	if ((*table)->philo == NULL)
 	{
-		free_and_exit(*table, "Error. Failed to malloc for the philo array");
+		error_writer(*table, "Failed to malloc for the philo array");
 		return (EXIT_FAILURE);
 	}
 	i = 0;
@@ -119,7 +119,7 @@ int main(int argc, char **argv)
 	}
 	if (init_table(&table, argc, argv) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	table->start_time = timestamp();
+	table->start_time = timestamp(table);
 	if (pthread_mutex_init(&table->mutex, NULL) == EXIT_FAILURE)
 	{
 		printf("Error. Failed to init the general mutex\n");
@@ -127,6 +127,6 @@ int main(int argc, char **argv)
 	}
 	if (create_threads(table) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	free_and_exit(table, NULL);
+	free_and_exit(table);
 	return (EXIT_SUCCESS);
 }
