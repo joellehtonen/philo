@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:54:30 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/26 10:18:41 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/26 13:58:39 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static void	destroy_mutexes(t_table *table)
 	while (i < table->philos_total)
 	{
 		pthread_mutex_destroy(&table->philo[i]->fork);
-		// pthread_mutex_destroy(&table->philo[i]->other_fork);
 		i++;
 	}
 	pthread_mutex_destroy(&table->mutex);

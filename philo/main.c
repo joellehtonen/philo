@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 10:55:23 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/26 11:44:14 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/26 15:16:31 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	init_philo(t_table *table, int i)
 	table->philo[i] = malloc(sizeof(t_philo));
 	if (table->philo[i] == NULL)
 	{
-		error_writer(table, "Failed to malloc for philos");
+		error_writer(table, "Failed to mallocate a philo");
 		return (EXIT_FAILURE);
 	}
 	memset(table->philo[i], 0, sizeof(t_philo));
@@ -49,11 +49,6 @@ static int	init_philo(t_table *table, int i)
 		error_writer(table, "Failed to init a fork");
 		return (EXIT_FAILURE);
 	}
-	// if (pthread_mutex_init(&table->philo[i]->other_fork, NULL) != 0)
-	// {
-	// 	error_writer(table, "Failed to init a fork");
-	// 	return (EXIT_FAILURE);
-	// }
 	table->philo[i]->number = i + 1;
 	table->philo[i]->table = table;
 	return (EXIT_SUCCESS);
@@ -67,7 +62,7 @@ static int	parse_input(t_table ***table, int argc, char **argv)
 		error_writer(**table, "Too many philosophers");
 		return (EXIT_FAILURE);
 	}
-	(**table)->time_to_die = ft_atoi(argv[2]) * 1000;
+	(**table)->time_to_die = ft_atoi(argv[2]);
 	(**table)->time_to_eat = ft_atoi(argv[3]) * 1000;
 	(**table)->time_to_sleep = ft_atoi(argv[4]) * 1000;
 	if (argc == 6)
@@ -82,7 +77,7 @@ static int	init_table(t_table **table, int argc, char **argv)
 	*table = malloc(sizeof(t_table));
 	if (*table == NULL)
 	{
-		error_writer(*table, "Failed to malloc for the table");
+		error_writer(*table, "Failed to mallocate the table");
 		return (EXIT_FAILURE);
 	}
 	memset(*table, 0, sizeof(t_table));
@@ -91,7 +86,7 @@ static int	init_table(t_table **table, int argc, char **argv)
 	(*table)->philo = malloc(sizeof(t_philo *) * (*table)->philos_total);
 	if ((*table)->philo == NULL)
 	{
-		error_writer(*table, "Failed to malloc for the philo array");
+		error_writer(*table, "Failed to mallocate the philo array");
 		return (EXIT_FAILURE);
 	}
 	i = 0;

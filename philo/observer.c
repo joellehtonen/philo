@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:48:52 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/26 12:02:17 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/26 15:42:25 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,9 @@ void	welfare_check(t_table *table, int number)
 	size_t	time;
 
 	time = timestamp(table);
-	if (table->philo[number] == NULL)
-	{
-		error_writer(table, "Problem with the philo index");
-		return ;
-	}
-	if ((time - table->philo[number]->last_meal) >= table->time_to_die)
+	if ((time - table->philo[number]->last_meal) > table->time_to_die)
 	{
 		pthread_mutex_lock(&table->mutex);
-		printf("I am philo %d\n", table->philo[number]->number);
-		printf("time now: %zu\n", time);
-		printf("last meal time: %zu\n", table->philo[number]->last_meal);
-		printf("time since last meal %zu\n", time - table->philo[number]->last_meal);
-		printf("time to die: %zu\n", table->time_to_die);
-		table->philo[number]->dead = true;
 		table->exit = true;
 		pthread_mutex_unlock(&table->mutex);
 		state_writer(table, table->philo[number]->number, "died");
