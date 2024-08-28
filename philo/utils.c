@@ -6,11 +6,20 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 13:22:50 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/23 13:27:26 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/28 15:39:15 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	restless_usleep(t_table *table, int time)
+{
+	while (time > 0 && table->exit == false)
+	{
+		usleep(1000);
+		time -= 1000;
+	}
+}
 
 int	ft_atoi(const char *str)
 {

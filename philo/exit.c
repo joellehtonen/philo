@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:54:30 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/28 15:16:49 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/28 15:32:01 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void	join_threads(t_table *table)
 		pthread_join(table->philo[i]->thread, NULL);
 		i++;
 	}
-	pthread_join(table->observer, NULL);
 }
 
 void	free_and_exit(t_table *table)

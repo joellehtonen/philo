@@ -4,7 +4,7 @@ FLAGS	= -Wall -Wextra -Werror -pthread -g
 SOURCES	=	main.c \
 			init.c \
 			routine.c \
-			observer.c \
+			monitor.c \
 			writer.c \
 			exit.c \
 			utils.c

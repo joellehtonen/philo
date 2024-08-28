@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 10:55:23 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/28 15:13:37 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/28 15:34:10 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,6 @@ static int	create_threads(t_table *table)
 			return (EXIT_FAILURE);
 		}
 		i++;
-	}
-	if (pthread_create(&table->observer, NULL, &observer_routine, table) != 0)
-	{
-		error_writer(table, "Failed to create an observer thread");
-		return (EXIT_FAILURE);
 	}
 	table->ready = 1;
 	return (EXIT_SUCCESS);
@@ -96,7 +91,7 @@ int main(int argc, char **argv)
 	table->start_time = timestamp(table);
 	if (create_threads(table) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	//observe(table);
+	monitor_routine(table);
 	free_and_exit(table);
 	return (EXIT_SUCCESS);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   observer.c                                         :+:      :+:    :+:   */
+/*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:48:52 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/26 15:42:25 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/28 16:00:39 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,27 +40,24 @@ void	welfare_check(t_table *table, int number)
 	return ;
 }
 
-void	*observer_routine(void *data)
+void	monitor_routine(t_table *table)
 {
-	t_table				*table;
-	unsigned int		number;
+	unsigned int		philo_index;
 	unsigned int		counter;
 	
-	table = (t_table *)data;
-	number = 0;
+	philo_index = 0;
 	counter = 0;
 	while (table->exit == false)
 	{
-		welfare_check(table, number);
+		welfare_check(table, philo_index);
 		if (table->meals_required > 0)
-			counter = meal_check(table, number, counter);
-		if (number == table->philos_total - 1)
+			counter = meal_check(table, philo_index, counter);
+		philo_index++;
+		if (philo_index == table->philos_total)
 		{
-			number = 0;
+			philo_index = 0;
 			counter = 0;
 		}
-		else
-			number++;
 	}
-	return (NULL);
+	return ;
 }

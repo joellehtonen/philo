@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 10:09:25 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/26 11:29:48 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/28 15:51:25 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ size_t	timestamp(t_table *table)
 
 void	state_writer(t_table *table, int philo, char *str)
 {
+	// if (table->exit == true)
+	// 	return ;
 	pthread_mutex_lock(&table->mutex);
 	printf("%lu %d %s\n", timestamp(table), philo, str);
 	pthread_mutex_unlock(&table->mutex);
