@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:02:27 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/26 16:11:27 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/28 10:16:09 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static void	restless_usleep(t_table *table, int time)
 {
 	while (time > 0 && table->exit == false)
 	{
-		usleep(1);
-		time--;
+		usleep(1000);
+		time -= 1000;
 	}
 }
 
@@ -59,6 +59,7 @@ static void	eat_sleep(t_philo *philo, int next_index)
 		philo->last_meal = timestamp(philo->table);
 	if (philo->table->exit == false)
 		restless_usleep(philo->table, philo->table->time_to_eat);
+		//usleep(philo->table->time_to_eat);
 	if (philo->table->exit == false)
 		philo->meals_eaten++;
 	if (philo->table->exit == false)
@@ -69,6 +70,7 @@ static void	eat_sleep(t_philo *philo, int next_index)
 		state_writer(philo->table, philo->number, "is sleeping");
 	if (philo->table->exit == false)
 		restless_usleep(philo->table, philo->table->time_to_sleep);
+		//usleep(philo->table->time_to_sleep);
 }
 
 void	*routine(void *data)
@@ -81,7 +83,6 @@ void	*routine(void *data)
 		next_index = 0;
 	else
 		next_index = philo->number;
-	philo->last_meal = timestamp(philo->table);
 	while (philo->table->ready == false)
 		usleep(1);
 	while (philo->table->exit == false)

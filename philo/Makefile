@@ -2,6 +2,7 @@ NAME	= philo
 CC		= cc
 FLAGS	= -Wall -Wextra -Werror -pthread -g
 SOURCES	=	main.c \
+			init.c \
 			routine.c \
 			observer.c \
 			writer.c \
@@ -25,4 +26,4 @@ fclean:	clean
 
 re: fclean all
 
-.PHONY: all bonus clean fclean remake
+.PHONY: all bonus clean fclean re

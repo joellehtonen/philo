@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 13:23:41 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/26 15:42:08 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/28 11:00:28 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct	s_table
 	t_philo			**philo;
 }	t_table;
 
+int			init_table(t_table **table, int argc, char **argv);
 void		*routine(void *data);
 void		*observer_routine(void *data);
 void		welfare_check(t_table *table, int number);
