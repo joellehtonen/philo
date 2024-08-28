@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:40:41 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/28 10:41:34 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/28 15:21:21 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ static int	init_philo(t_table *table, int i)
 	if (pthread_mutex_init(&table->philo[i]->fork, NULL) != 0)
 	{
 		error_writer(table, "Failed to init a fork");
+		while (i > 0)
+			pthread_mutex_destroy(&table->philo[--i]->fork);
 		return (EXIT_FAILURE);
 	}
 	table->philo[i]->number = i + 1;
