@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:40:41 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/29 15:29:26 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:46:19 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	parse_input(t_table ***table, int argc, char **argv)
 int	init_table(t_table **table, int argc, char **argv)
 {
 	unsigned int	i;
-	
+
 	*table = malloc(sizeof(t_table));
 	if (*table == NULL)
 	{
@@ -64,7 +64,7 @@ int	init_table(t_table **table, int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	i = 0;
-	while(i < (*table)->philos_total)
+	while (i < (*table)->philos_total)
 	{
 		if (init_philo(*table, i) == EXIT_FAILURE)
 			return (EXIT_FAILURE);

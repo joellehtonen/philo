@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 10:55:23 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/29 15:45:22 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:48:07 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,13 @@
 static int	create_threads(t_table *table)
 {
 	unsigned int	i;
-	
+
 	table->start_time = timestamp(table);
 	i = 0;
 	while (i < table->philos_total)
 	{
-		if (pthread_create(&table->philo[i]->thread, NULL, &routine, table->philo[i]) != 0)
+		if (pthread_create(&table->philo[i]->thread, NULL,
+				&routine, table->philo[i]) != 0)
 		{
 			error_writer(table, "Failed to create a philo thread");
 			return (EXIT_FAILURE);
@@ -31,7 +32,7 @@ static int	create_threads(t_table *table)
 	return (EXIT_SUCCESS);
 }
 
-static int check_input(char **argv)
+static int	check_input(char **argv)
 {
 	int	i;
 	int	j;
@@ -45,12 +46,12 @@ static int check_input(char **argv)
 			if (j == 0)
 			{
 				if (argv[i][j] < '1' || argv[i][j] > '9')
-					return (EXIT_FAILURE); 
+					return (EXIT_FAILURE);
 			}
 			else
 			{
 				if (argv[i][j] < '0' || argv[i][j] > '9')
-					return (EXIT_FAILURE); 
+					return (EXIT_FAILURE);
 			}
 			j++;
 		}
@@ -59,7 +60,7 @@ static int check_input(char **argv)
 	return (EXIT_SUCCESS);
 }
 
-void print_instructions(void)
+void	print_instructions(void)
 {
 	printf("Error. Invalid amount of arguments. Instructions:\n");
 	printf(" 1. Number of philosophers\n");
@@ -67,10 +68,10 @@ void print_instructions(void)
 	printf(" 5. How many times each philosopher must eat (optional)\n");
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_table			*table;
-	
+
 	table = NULL;
 	if (argc < 5 || argc > 6)
 	{
@@ -79,7 +80,7 @@ int main(int argc, char **argv)
 	}
 	if (check_input(argv) == EXIT_FAILURE)
 	{
-		printf("Error. Only positive integers accepted as input\n");
+		printf("Error. Only positive integers as input\n");
 		return (EXIT_FAILURE);
 	}
 	if (init_table(&table, argc, argv) == EXIT_FAILURE)

@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:54:30 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/29 15:42:03 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:42:21 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	free_memory(t_table *table)
 void	destroy_mutexes(t_table *table)
 {
 	unsigned int	i;
-	
+
 	if (table == NULL)
 		return ;
 	i = 0;

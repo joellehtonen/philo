@@ -6,13 +6,13 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:48:52 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/29 15:34:46 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:46:37 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static int meal_check(t_table *table, int number, unsigned int counter)
+static int	meal_check(t_table *table, int number, unsigned int counter)
 {
 	if (table->philo[number]->meals_eaten > table->meals_required)
 		counter++;
@@ -44,7 +44,7 @@ void	monitor_routine(t_table *table)
 {
 	unsigned int		philo_index;
 	unsigned int		counter;
-	
+
 	philo_index = 0;
 	counter = 0;
 	while (check_exit(table) == false)

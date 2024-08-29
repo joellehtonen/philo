@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 13:22:50 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/29 15:05:18 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:43:53 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	check_exit(t_table *table)
 		return (true);
 	}
 	pthread_mutex_unlock(&table->mutex);
-		return (false);
+	return (false);
 }
 
 int	check_ready(t_table *table)
@@ -33,7 +33,7 @@ int	check_ready(t_table *table)
 		return (true);
 	}
 	pthread_mutex_unlock(&table->mutex);
-		return (false);
+	return (false);
 }
 
 void	restless_usleep(t_table *table, int time)

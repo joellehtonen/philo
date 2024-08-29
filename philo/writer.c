@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 10:09:25 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/29 15:41:47 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:44:02 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ size_t	timestamp(t_table *table)
 {
 	struct timeval	time;
 	size_t			milliseconds;
-	
+
 	gettimeofday(&time, NULL);
 	milliseconds = (time.tv_sec * 1000) + (time.tv_usec / 1000);
 	milliseconds = milliseconds - table->start_time;
