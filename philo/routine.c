@@ -6,17 +6,18 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:02:27 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/29 13:00:18 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:21:55 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	thinking(t_philo *philo)
+static void	thinking(t_philo *philo, unsigned int think_time)
 {
 	if (check_exit(philo->table) == true)
 		return ;
 	state_writer(philo->table, philo->number, "is thinking");
+	restless_usleep(philo->table, think_time);
 }
 
 static void	sleeping(t_philo *philo)
@@ -57,10 +58,10 @@ static void	sleeping(t_philo *philo)
 
 static void	take_fork(t_philo *philo, int next_index)
 {
-	if (check_exit(philo->table) == true)
-		return ;
-	pthread_mutex_lock(&philo->fork);
-	state_writer(philo->table, philo->number, "has taken a fork");
+	if (check_exit(philo->table) == false)
+		pthread_mutex_lock(&philo->fork);
+	if (check_exit(philo->table) == false)
+		state_writer(philo->table, philo->number, "has taken a fork");
 	if (check_exit(philo->table) == true || philo->table->philos_total == 1)
 		return ;
 	if (check_exit(philo->table) == false)
@@ -100,12 +101,13 @@ void	*routine(void *data)
 		next_index = philo->number;
 	while (check_ready(philo->table) == false)
 		usleep(10);
-	usleep(100 * philo->number);
+	if (philo->number % 2 == 0)
+		thinking(philo, 100);
 	while (check_exit(philo->table) == false)
 	{
 		eating(philo, next_index);
 		sleeping(philo);
-		thinking(philo);
+		thinking(philo, 0);
 	}
 	return (NULL);
 }

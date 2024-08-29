@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:48:52 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/28 16:00:39 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/29 15:34:46 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	monitor_routine(t_table *table)
 	
 	philo_index = 0;
 	counter = 0;
-	while (table->exit == false)
+	while (check_exit(table) == false)
 	{
 		welfare_check(table, philo_index);
 		if (table->meals_required > 0)

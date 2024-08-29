@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 10:55:23 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/28 15:34:10 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/29 15:45:22 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static int	create_threads(t_table *table)
 {
 	unsigned int	i;
 	
+	table->start_time = timestamp(table);
 	i = 0;
 	while (i < table->philos_total)
 	{
@@ -85,10 +86,9 @@ int main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	if (pthread_mutex_init(&table->mutex, NULL) == EXIT_FAILURE)
 	{
-		printf("Error. Failed to init the general mutex\n");
+		printf("Error. Failed to init general mutex\n");
 		return (EXIT_FAILURE);
 	}
-	table->start_time = timestamp(table);
 	if (create_threads(table) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	monitor_routine(table);

@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:40:41 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/28 15:21:21 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/29 15:29:26 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,6 @@ static int	init_philo(t_table *table, int i)
 static int	parse_input(t_table ***table, int argc, char **argv)
 {
 	(**table)->philos_total = ft_atoi(argv[1]);
-	// if ((**table)->philos_total > 200)
-	// {
-	// 	error_writer(**table, "Too many philosophers");
-	// 	return (EXIT_FAILURE);
-	// }
 	(**table)->time_to_die = ft_atoi(argv[2]);
 	(**table)->time_to_eat = ft_atoi(argv[3]) * 1000;
 	(**table)->time_to_sleep = ft_atoi(argv[4]) * 1000;
