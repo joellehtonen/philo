@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 13:23:41 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/28 17:10:43 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/08/29 11:52:51 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,6 @@ void	join_threads(t_table *table);
 int		ft_atoi(const char *str);
 void	restless_usleep(t_table *table, int time);
 int		check_exit(t_table *table);
+int		check_ready(t_table *table);
 
 #endif
