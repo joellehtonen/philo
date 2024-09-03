@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 13:23:41 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/29 16:47:40 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/03 14:21:06 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ typedef struct s_philo
 
 typedef struct s_table
 {
-	pthread_t		observer;
 	pthread_mutex_t	mutex;
 	unsigned int	philos_total;
 	unsigned int	philo_index;

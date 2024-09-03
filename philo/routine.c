@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:02:27 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/29 16:21:55 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/03 14:55:12 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,34 +27,6 @@ static void	sleeping(t_philo *philo)
 	state_writer(philo->table, philo->number, "is sleeping");
 	restless_usleep(philo->table, philo->table->time_to_sleep);
 }
-
-// static void	take_fork(t_philo *philo, int next_index)
-// {
-// 	if (check_exit(philo->table) == true)
-// 		return ;
-// 	if (philo->number % 2 == 0)
-// 	{
-// 		pthread_mutex_lock(&philo->table->philo[next_index]->fork);
-// 		state_writer(philo->table, philo->number, "has taken a fork");
-// 		if (check_exit(philo->table) == true)
-// 			return ;
-// 		if (check_exit(philo->table) == false)
-// 			pthread_mutex_lock(&philo->fork);
-// 		if (check_exit(philo->table) == false)
-// 			state_writer(philo->table, philo->number, "has taken a fork");
-// 	}
-// 	else
-// 	{
-// 		pthread_mutex_lock(&philo->fork);
-// 		state_writer(philo->table, philo->number, "has taken a fork");
-// 		if (check_exit(philo->table) == true || philo->table->philos_total == 1)
-// 			return ;
-// 		if (check_exit(philo->table) == false)
-// 			pthread_mutex_lock(&philo->table->philo[next_index]->fork);
-// 		if (check_exit(philo->table) == false)
-// 			state_writer(philo->table, philo->number, "has taken a fork");
-// 	}
-// }
 
 static void	take_fork(t_philo *philo, int next_index)
 {
