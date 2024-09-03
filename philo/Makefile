@@ -5,8 +5,8 @@ SOURCES	=	main.c \
 			init.c \
 			routine.c \
 			monitor.c \
-			writer.c \
 			exit.c \
+			writer.c \
 			utils.c
 OBJECTS	= $(SOURCES:.c=.o)
 

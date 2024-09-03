@@ -6,13 +6,13 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:54:30 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/29 16:42:21 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/03 16:44:53 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	free_memory(t_table *table)
+static void	free_memory(t_table *table)
 {
 	unsigned int	i;
 
@@ -28,7 +28,7 @@ void	free_memory(t_table *table)
 	free(table);
 }
 
-void	destroy_mutexes(t_table *table)
+static void	destroy_mutexes(t_table *table)
 {
 	unsigned int	i;
 
@@ -43,7 +43,7 @@ void	destroy_mutexes(t_table *table)
 	pthread_mutex_destroy(&table->mutex);
 }
 
-void	join_threads(t_table *table)
+static void	join_threads(t_table *table)
 {
 	unsigned int	i;
 

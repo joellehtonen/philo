@@ -6,11 +6,20 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 13:22:50 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/29 16:43:53 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/03 15:53:09 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	restless_usleep(t_table *table, int time)
+{
+	while (time > 0 && check_exit(table) == false)
+	{
+		usleep(10000);
+		time -= 10000;
+	}
+}
 
 int	check_exit(t_table *table)
 {
@@ -34,15 +43,6 @@ int	check_ready(t_table *table)
 	}
 	pthread_mutex_unlock(&table->mutex);
 	return (false);
-}
-
-void	restless_usleep(t_table *table, int time)
-{
-	while (time > 0 && check_exit(table) == false)
-	{
-		usleep(10000);
-		time -= 10000;
-	}
 }
 
 int	ft_atoi(const char *str)

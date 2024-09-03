@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 13:23:41 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/03 15:19:29 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/03 16:45:03 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdio.h> //for printing
 # include <unistd.h> //for usleep
 # include <string.h> //for memset
-# include <limits.h> //for INT_MAX
+# include <limits.h> //for INT_MAX and INT_MIN
 # include <stdbool.h> //for true and false
 
 typedef struct s_table	t_table;
@@ -55,9 +55,6 @@ void	welfare_check(t_table *table, int number);
 void	state_writer(t_table *table, int philo, char *str);
 size_t	timestamp(t_table *table);
 void	free_and_exit(t_table *table);
-void	free_memory(t_table *table);
-void	destroy_mutexes(t_table *table);
-void	join_threads(t_table *table);
 int		ft_atoi(const char *str);
 void	restless_usleep(t_table *table, int time);
 int		check_exit(t_table *table);
