@@ -1,0 +1,12 @@
+//BONUS
+
+create processes with fork
+
+if a child exits with an error (philo died), kill all other child processes
+
+monitor can still be a thread? one for each philo?
+
+create a semaphore with sem_open
+value of semaphore = amount of philos, increment with sem_post
+also one general semaphore for writing and other stuff?
+each philo when taking a fork decrements semaphore with sem_wait
