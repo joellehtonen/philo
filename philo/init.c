@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:40:41 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/03 15:01:36 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/03 15:18:52 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	init_philos(t_table *table, unsigned int i)
 	table->philo = malloc(sizeof(t_philo *) * table->philos_total);
 	if (table->philo == NULL)
 	{
-		error_writer(table, "Failed to mallocate the philo array");
+		printf("Error. Failed to mallocate the philo array\n");
 		return (EXIT_FAILURE);
 	}
 	while (i < table->philos_total)
@@ -25,13 +25,13 @@ static int	init_philos(t_table *table, unsigned int i)
 		table->philo[i] = malloc(sizeof(t_philo));
 		if (table->philo[i] == NULL)
 		{
-			error_writer(table, "Failed to mallocate a philo");
+			printf("Error. Failed to mallocate a philo\n");
 			return (EXIT_FAILURE);
 		}
 		memset(table->philo[i], 0, sizeof(t_philo));
 		if (pthread_mutex_init(&table->philo[i]->fork, NULL) != 0)
 		{
-			error_writer(table, "Failed to init a fork");
+			printf("Error. Failed to init a fork\n");
 			return (EXIT_FAILURE);
 		}
 		table->philo[i]->number = i + 1;
@@ -60,7 +60,7 @@ int	init_table(t_table **table, int argc, char **argv)
 	*table = malloc(sizeof(t_table));
 	if (*table == NULL)
 	{
-		error_writer(*table, "Failed to mallocate the table");
+		printf("Error. Failed to mallocate the table\n");
 		return (EXIT_FAILURE);
 	}
 	memset(*table, 0, sizeof(t_table));

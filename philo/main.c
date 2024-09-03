@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 10:55:23 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/03 14:49:25 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/03 15:22:20 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,16 @@ static int	create_threads(t_table *table)
 		if (pthread_create(&table->philo[i]->thread, NULL,
 				&routine, table->philo[i]) != 0)
 		{
-			error_writer(table, "Failed to create a philo thread");
+			pthread_mutex_lock(&table->mutex);
+			printf("Error. Failed to create a philo thread\n");
+			pthread_mutex_unlock(&table->mutex);
 			return (EXIT_FAILURE);
 		}
 		i++;
 	}
+	pthread_mutex_lock(&table->mutex);
 	table->ready = 1;
+	pthread_mutex_unlock(&table->mutex);
 	return (EXIT_SUCCESS);
 }
 

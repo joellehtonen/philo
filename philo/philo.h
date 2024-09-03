@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 13:23:41 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/03 14:21:06 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/03 15:19:29 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	*routine(void *data);
 void	monitor_routine(t_table *table);
 void	welfare_check(t_table *table, int number);
 void	state_writer(t_table *table, int philo, char *str);
-void	error_writer(t_table *table, char *str);
 size_t	timestamp(t_table *table);
 void	free_and_exit(t_table *table);
 void	free_memory(t_table *table);
