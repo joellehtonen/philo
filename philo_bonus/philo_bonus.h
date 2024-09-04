@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:23:14 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/03 15:47:41 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/04 14:07:29 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,33 +22,27 @@
 # include <stdbool.h> //for true and false
 # include <semaphore.h> //for semaphores
 
-typedef struct s_table	t_table;
-
-typedef struct s_philo
-{
-	//pthread_t		thread;
-	unsigned int	number;
-	//pthread_mutex_t	fork;
-	size_t			last_meal;
-	unsigned int	meals_eaten;
-	t_table			*table;
-}	t_philo;
-
 typedef struct s_table
 {
-	//pthread_t		observer;
+	pthread_t		monitor;
 	sem_t			*forks;
 	sem_t			*lock;
 	unsigned int	philos_total;
-	unsigned int	philo_index;
+	unsigned int	philo_number;
 	size_t			time_to_die;
 	size_t			time_to_eat;
 	size_t			time_to_sleep;
 	unsigned int	meals_required;
-	unsigned int	exit;
-	unsigned int	ready;
+	unsigned int	meals_eaten;
+	size_t			last_meal;
+	//unsigned int	exit;
 	size_t			start_time;
-	t_philo			**philo;
+	size_t			**pid;
 }	t_table;
+
+int		create_semaphores(t_table *table);
+void	*routine(void *data);
+int		local_monitor_routine(t_table *philo);
+void	global_monitor_routine(t_table *table);
 
 #endif

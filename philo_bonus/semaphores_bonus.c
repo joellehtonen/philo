@@ -6,13 +6,13 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 16:02:48 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/03 16:47:40 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/04 14:06:25 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int create_semaphores(t_table *table)
+c
 {
 	sem_unlink("/lock");
 	table->lock = sem_open("/lock", O_CREAT | O_EXCL, 0644, 1);

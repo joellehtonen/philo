@@ -6,11 +6,35 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:16:13 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/03 15:58:08 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/04 14:03:53 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
+
+static int	create_processes(t_table *table)
+{
+	unsigned int	i;
+	pid_t			pid;
+	
+	table->start_time = timestamp(table);
+	i = 0;
+	while (i < table->philos_total)
+	{
+		pid = fork();
+		if (pid < 0)
+			return (EXIT_FAILURE);
+		else if (pid > 0)
+			table->pid[i] = pid;
+		else if (pid == 0)
+		{
+			table->philo_number = i + 1;
+			routine(table);
+		}
+		i++;
+	}
+	return (EXIT_SUCCESS);
+}
 
 static int	check_input(char **argv)
 {
@@ -40,7 +64,7 @@ static int	check_input(char **argv)
 	return (EXIT_SUCCESS);
 }
 
-void	print_instructions(void)
+static void	print_instructions(void)
 {
 	printf("Error. Invalid amount of arguments. Instructions:\n");
 	printf(" 1. Number of philosophers\n");
@@ -51,7 +75,6 @@ void	print_instructions(void)
 int	main(int argc, char **argv)
 {
 	t_table			*table;
-	t_philo			*philo;
 
 	table = NULL;
 	if (argc < 5 || argc > 6)
@@ -66,15 +89,9 @@ int	main(int argc, char **argv)
 	}
 	if (init_table(&table, argc, argv) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	create_semaphores();
-	// if (pthread_mutex_init(&table->mutex, NULL) == EXIT_FAILURE)
-	// {
-	// 	printf("Error. Failed to init general mutex\n");
-	// 	return (EXIT_FAILURE);
-	// }
-	// if (create_threads(table) == EXIT_FAILURE)
-	// 	return (EXIT_FAILURE);
-	// monitor_routine(table);
+	create_semaphores(table);
+	create_processes(table);
+	global_monitor_routine(table);
 	free_and_exit(table);
 	return (EXIT_SUCCESS);
 }
