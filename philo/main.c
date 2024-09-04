@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 10:55:23 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/03 15:22:20 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/04 13:08:17 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int	check_input(char **argv)
 	return (EXIT_SUCCESS);
 }
 
-void	print_instructions(void)
+static void	print_instructions(void)
 {
 	printf("Error. Invalid amount of arguments. Instructions:\n");
 	printf(" 1. Number of philosophers\n");
