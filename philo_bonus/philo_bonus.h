@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:23:14 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/04 14:07:29 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/05 12:06:10 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,16 @@
 # include <limits.h> //for INT_MAX and INT_MIN
 # include <stdbool.h> //for true and false
 # include <semaphore.h> //for semaphores
+# include <signal.h> //for kill
+# include <sys/wait.h> //for WNOHANG
+# include <fcntl.h> // for O_CREAT and O_EXCL
 
 typedef struct s_table
 {
 	pthread_t		monitor;
 	sem_t			*forks;
 	sem_t			*lock;
+	sem_t			*hungry;
 	unsigned int	philos_total;
 	unsigned int	philo_number;
 	size_t			time_to_die;
@@ -35,7 +39,6 @@ typedef struct s_table
 	unsigned int	meals_required;
 	unsigned int	meals_eaten;
 	size_t			last_meal;
-	//unsigned int	exit;
 	size_t			start_time;
 	size_t			**pid;
 }	t_table;
