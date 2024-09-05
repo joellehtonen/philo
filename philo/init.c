@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:40:41 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/03 15:18:52 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/05 10:45:25 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,11 @@ int	init_table(t_table **table, int argc, char **argv)
 	if (pthread_mutex_init(&(*table)->mutex, NULL) == EXIT_FAILURE)
 	{
 		printf("Error. Failed to init general mutex\n");
+		return (EXIT_FAILURE);
+	}
+	if (pthread_mutex_init(&(*table)->writer, NULL) == EXIT_FAILURE)
+	{
+		printf("Error. Failed to init writer mutex\n");
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);

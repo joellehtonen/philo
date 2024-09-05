@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:48:52 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/08/29 16:46:37 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:48:00 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 static int	meal_check(t_table *table, int number, unsigned int counter)
 {
+	pthread_mutex_lock(&table->mutex);
 	if (table->philo[number]->meals_eaten > table->meals_required)
 		counter++;
 	if (counter == table->philos_total)
 	{
-		pthread_mutex_lock(&table->mutex);
 		table->exit = true;
-		pthread_mutex_unlock(&table->mutex);
 	}
+	pthread_mutex_unlock(&table->mutex);
 	return (counter);
 }
 
@@ -30,13 +30,13 @@ void	welfare_check(t_table *table, int number)
 	size_t	time;
 
 	time = timestamp(table);
+	pthread_mutex_lock(&table->mutex);
 	if ((time - table->philo[number]->last_meal) > table->time_to_die)
 	{
-		pthread_mutex_lock(&table->mutex);
 		table->exit = true;
-		pthread_mutex_unlock(&table->mutex);
 		state_writer(table, table->philo[number]->number, "died");
 	}
+	pthread_mutex_unlock(&table->mutex);
 	return ;
 }
 

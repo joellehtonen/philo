@@ -1,6 +1,6 @@
 NAME	= philo
 CC		= cc
-FLAGS	= -Wall -Wextra -Werror -pthread -g -fsanitize=address
+FLAGS	= -Wall -Wextra -Werror -pthread -g
 SOURCES	=	main.c \
 			init.c \
 			routine.c \

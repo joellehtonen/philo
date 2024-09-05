@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 13:23:41 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/04 13:44:13 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:49:06 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_philo
 	pthread_t		thread;
 	unsigned int	number;
 	pthread_mutex_t	fork;
+	unsigned int	next_fork;
 	size_t			last_meal;
 	unsigned int	meals_eaten;
 	t_table			*table;
@@ -36,8 +37,8 @@ typedef struct s_philo
 typedef struct s_table
 {
 	pthread_mutex_t	mutex;
+	pthread_mutex_t	writer;
 	unsigned int	philos_total;
-	//unsigned int	philo_index;
 	size_t			time_to_die;
 	size_t			time_to_eat;
 	size_t			time_to_sleep;
