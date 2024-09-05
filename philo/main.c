@@ -6,12 +6,13 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 10:55:23 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/04 13:08:17 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/05 16:42:49 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+//create threads, then flip ready condition
 static int	create_threads(t_table *table)
 {
 	unsigned int	i;
@@ -36,6 +37,7 @@ static int	create_threads(t_table *table)
 	return (EXIT_SUCCESS);
 }
 
+//check if input is only positive integers
 static int	check_input(char **argv)
 {
 	int	i;
@@ -64,6 +66,7 @@ static int	check_input(char **argv)
 	return (EXIT_SUCCESS);
 }
 
+//print instructions in case argument count is incorrect
 static void	print_instructions(void)
 {
 	printf("Error. Invalid amount of arguments. Instructions:\n");

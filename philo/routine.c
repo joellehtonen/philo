@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:02:27 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/05 16:04:53 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/05 16:25:58 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,10 @@ static void	eating(t_philo *philo)
 	release_forks(philo);
 }
 
+// first philos get the index of their other fork,
+// then wait until all are ready
+// even-numbered philos start by thinking a bit, to help with timing
+// then they run their routine, until an exit condition is flipped
 void	*routine(void *data)
 {
 	t_philo			*philo;

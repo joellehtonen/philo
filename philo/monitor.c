@@ -6,12 +6,13 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:48:52 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/05 16:06:40 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/05 16:56:28 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+//check if a philo has eaten enough. if all have, flip exit condition
 static int	meal_check(t_table *table, int number, unsigned int counter)
 {
 	pthread_mutex_lock(&table->mutex);
@@ -25,6 +26,7 @@ static int	meal_check(t_table *table, int number, unsigned int counter)
 	return (counter);
 }
 
+//check if a philo has died, if so, flip exit condition
 void	welfare_check(t_table *table, int number)
 {
 	size_t	time;
@@ -40,6 +42,7 @@ void	welfare_check(t_table *table, int number)
 	return ;
 }
 
+//check thru all the philos. loop as long as necessary
 void	monitor_routine(t_table *table)
 {
 	unsigned int		philo_index;
