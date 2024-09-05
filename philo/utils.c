@@ -6,12 +6,28 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 13:22:50 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/03 15:53:09 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/05 15:59:56 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+//check which forks philo has locked and release each
+void	release_forks(t_philo *philo)
+{
+	if (philo->own_fork_locked == 1)
+	{
+		pthread_mutex_unlock(&philo->fork);
+		philo->own_fork_locked = 0;
+	}
+	if (philo->next_fork_locked == 1)
+	{
+		pthread_mutex_unlock(&philo->table->philo[philo->next_index]->fork);
+		philo->next_fork_locked = 0;
+	}
+}
+
+//"sleep" which periodically checks if it's time to exit
 void	restless_usleep(t_table *table, int time)
 {
 	while (time > 0 && check_exit(table) == false)
@@ -21,6 +37,7 @@ void	restless_usleep(t_table *table, int time)
 	}
 }
 
+//check if exit condition is fulfilled
 int	check_exit(t_table *table)
 {
 	pthread_mutex_lock(&table->mutex);
@@ -33,6 +50,7 @@ int	check_exit(t_table *table)
 	return (false);
 }
 
+//check if ready condition is fulfilled
 int	check_ready(t_table *table)
 {
 	pthread_mutex_lock(&table->mutex);

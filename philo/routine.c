@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:02:27 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/05 11:34:39 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/05 16:04:53 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ static void	sleeping(t_philo *philo)
 
 static void	take_fork(t_philo *philo)
 {
-	if (check_exit(philo->table) == false)
-		pthread_mutex_lock(&philo->fork);
+	pthread_mutex_lock(&philo->fork);
+	philo->own_fork_locked = 1;
 	if (check_exit(philo->table) == false)
 		state_writer(philo->table, philo->number, "has taken a fork");
 	if (check_exit(philo->table) == true || philo->table->philos_total == 1)
 		return ;
-	if (check_exit(philo->table) == false)
-		pthread_mutex_lock(&philo->table->philo[philo->next_fork]->fork);
+	pthread_mutex_lock(&philo->table->philo[philo->next_index]->fork);
+	philo->next_fork_locked = 1;
 	if (check_exit(philo->table) == false)
 		state_writer(philo->table, philo->number, "has taken a fork");
 }
@@ -47,10 +47,9 @@ static void	eating(t_philo *philo)
 	take_fork(philo);
 	if (check_exit(philo->table) == true || philo->table->philos_total == 1)
 	{
-		pthread_mutex_unlock(&philo->fork);
+		release_forks(philo);
 		if (philo->table->philos_total == 1)
 			restless_usleep(philo->table, philo->table->time_to_die * 1000);
-		pthread_mutex_unlock(&philo->table->philo[philo->next_fork]->fork);
 		return ;
 	}
 	state_writer(philo->table, philo->number, "is eating");
@@ -61,8 +60,7 @@ static void	eating(t_philo *philo)
 	pthread_mutex_lock(&philo->table->mutex);
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->table->mutex);
-	pthread_mutex_unlock(&philo->fork);
-	pthread_mutex_unlock(&philo->table->philo[philo->next_fork]->fork);
+	release_forks(philo);
 }
 
 void	*routine(void *data)
@@ -71,9 +69,9 @@ void	*routine(void *data)
 
 	philo = (t_philo *)data;
 	if (philo->number == philo->table->philos_total)
-		philo->next_fork = 0;
+		philo->next_index = 0;
 	else
-		philo->next_fork = philo->number;
+		philo->next_index = philo->number;
 	while (check_ready(philo->table) == false)
 		usleep(10);
 	if (philo->number % 2 == 0)
