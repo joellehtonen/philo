@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:41:15 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/06 09:57:43 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/06 13:38:10 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,12 @@ void	*routine(void *data)
 
 	philo = (t_table*)data;
 	if (pthread_create(&philo->monitor, NULL,
-		&local_monitor_routine, philo) != 0);
+		&local_monitor_routine, philo) != 0)
 	{
 		sem_wait(philo->lock);
 		printf("Error. Failed to create a monitor thread\n");
 		sem_post(philo->lock);
-		return (NULL); //is this correct return value?
+		free_and_exit(philo);
 	}
 	thinking(philo, philo->philo_number * 100);
 	while (true)
@@ -79,5 +79,5 @@ void	*routine(void *data)
 		sleeping(philo);
 		thinking(philo, 0);
 	}
-	return (NULL);
+	return (NULL);;
 }

@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:54:46 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/06 12:55:31 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/06 13:40:16 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 // then kills all processes with SIGTERM
 void	kill_all_processes(t_table *table)
 {
-	int	i;
+	unsigned int	i;
 
 	i = 0;
 	sem_wait(table->start_cleanup);
@@ -43,7 +43,6 @@ void	kill_all_processes(t_table *table)
 void	global_monitor_routine(t_table *table)
 {
 	pid_t	died;
-	int		i;
 	
 	while (true)
 	{
@@ -67,11 +66,13 @@ void	global_monitor_routine(t_table *table)
 
 // personal monitor that checks if it's been too long since philo's last meal
 // also checks if philo has eaten enough, and decrements semaphore once if so
-void	local_monitor_routine(t_table *philo)
+void	*local_monitor_routine(void *data)
 {
 	size_t	time;
 	int		signal_sent;
+	t_table *philo;
 	
+	philo = (t_table *)data;
 	signal_sent = 0;
 	while (true)
 	{
@@ -80,7 +81,7 @@ void	local_monitor_routine(t_table *philo)
 		{
 			// sem_wait(philo->child_died);
 			child_cleanup(philo);
-			return ;
+			return (NULL);
 		}
 		if (philo->meals_eaten >= philo->meals_required && signal_sent == 0)
 		{

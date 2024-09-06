@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:23:14 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/06 13:15:56 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/06 13:39:17 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,20 @@ typedef struct s_table
 	unsigned int	meals_eaten;
 	size_t			last_meal;
 	size_t			start_time;
-	size_t			**pid;
+	pid_t			*pid;
 }	t_table;
 
+int		init_table(t_table **table, int argc, char **argv);
 void	create_lock_semaphores(t_table *table);
 void	create_comm_semaphores(t_table *table);
 void	*routine(void *data);
-int		local_monitor_routine(t_table *philo);
+void	*local_monitor_routine(void *data);
 void	global_monitor_routine(t_table *table);
+size_t	timestamp(t_table *table);
+void	state_writer(t_table *table, int philo, char *str);
+void	free_and_exit(t_table *table);
+void	child_cleanup(t_table *philo);
+int		ft_atoi(const char *str);
+
 
 #endif
