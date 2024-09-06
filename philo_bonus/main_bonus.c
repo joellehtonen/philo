@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:16:13 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/06 10:32:25 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/06 12:32:52 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,9 @@ int	main(int argc, char **argv)
 		printf("Error. Only positive integers as input\n");
 		return (EXIT_FAILURE);
 	}
-	if (init_table(&table, argc, argv) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	create_semaphores(table);
+	init_table(&table, argc, argv);
+	create_lock_semaphores(table);
+	create_comm_semaphores(table);
 	create_processes(table);
 	global_monitor_routine(table);
 	free_and_exit(table);

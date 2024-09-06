@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:23:19 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/04 13:43:09 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/06 13:07:28 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,16 @@ int	init_table(t_table **table, int argc, char **argv)
 	if (*table == NULL)
 	{
 		printf("Error. Failed to mallocate the table\n");
-		return (EXIT_FAILURE);
+		free_and_exit(*table);
 	}
 	memset(*table, 0, sizeof(t_table));
 	if (parse_input(*table, argc, argv) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
+	(*table)->pid = malloc(sizeof(size_t) * ((*table)->philos_total + 1));
+	if ((*table )->pid == NULL)
+	{
+		printf("Error. Failed to mallocate the pid array\n");
+		free_and_exit(*table);
+	}
 	return (EXIT_SUCCESS);
 }

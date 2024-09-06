@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:54:46 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/06 11:43:41 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/06 12:55:31 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,14 @@ void	global_monitor_routine(t_table *table)
 			kill_all_processes(table);
 			return ;
 		}
-		usleep(10);
+		//usleep(10);
 	}
 	return ;
 }
 
 // personal monitor that checks if it's been too long since philo's last meal
 // also checks if philo has eaten enough, and decrements semaphore once if so
-int	local_monitor_routine(t_table *philo)
+void	local_monitor_routine(t_table *philo)
 {
 	size_t	time;
 	int		signal_sent;
@@ -78,13 +78,19 @@ int	local_monitor_routine(t_table *philo)
 		time = timestamp(philo);
 		if ((time - philo->last_meal) > philo->time_to_die)
 		{
-			return (philo->pid);
+			// sem_wait(philo->child_died);
+			child_cleanup(philo);
+			return ;
 		}
 		if (philo->meals_eaten >= philo->meals_required && signal_sent == 0)
 		{
 			sem_wait(philo->hungry_left);
 			signal_sent = 1;
 		}
-		usleep(10);
+		if (sem_wait(philo->start_cleanup) == 0)
+			sem_post(philo->start_cleanup);
+		else
+			child_cleanup(philo);
+		//usleep(10);
 	}
 } 

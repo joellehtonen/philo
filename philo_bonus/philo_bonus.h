@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:23:14 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/06 11:32:02 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/06 13:15:56 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_table
 	sem_t			*forks;
 	sem_t			*lock;
 	sem_t			*writer;
+	//sem_t			*child_died;
 	sem_t			*hungry_left;
 	sem_t			*start_cleanup;
 	sem_t			*ready_to_die;
@@ -46,7 +47,8 @@ typedef struct s_table
 	size_t			**pid;
 }	t_table;
 
-int		create_semaphores(t_table *table);
+void	create_lock_semaphores(t_table *table);
+void	create_comm_semaphores(t_table *table);
 void	*routine(void *data);
 int		local_monitor_routine(t_table *philo);
 void	global_monitor_routine(t_table *table);

@@ -1,13 +1,14 @@
-NAME	= philo
+NAME	= philo_bonus
 CC		= cc
 FLAGS	= -Wall -Wextra -Werror -pthread -g -fsanitize=address
-SOURCES	=	main.c \
-			init.c \
-			routine.c \
-			monitor.c \
-			exit.c \
-			writer.c \
-			utils.c
+SOURCES	=	main_bonus.c \
+			init_bonus.c \
+			routine_bonus.c \
+			monitor_bonus.c \
+			exit_bonus.c \
+			writer_bonus.c \
+			utils_bonus.c \
+			semaphores_bonus.c
 OBJECTS	= $(SOURCES:.c=.o)
 
 all: $(NAME)
@@ -26,4 +27,4 @@ fclean:	clean
 
 re: fclean all
 
-.PHONY: all bonus clean fclean re
+.PHONY: all clean fclean re
