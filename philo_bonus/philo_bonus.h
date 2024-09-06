@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:23:14 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/05 12:06:10 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/06 11:32:02 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ typedef struct s_table
 	pthread_t		monitor;
 	sem_t			*forks;
 	sem_t			*lock;
-	sem_t			*hungry;
+	sem_t			*writer;
+	sem_t			*hungry_left;
+	sem_t			*start_cleanup;
+	sem_t			*ready_to_die;
 	unsigned int	philos_total;
 	unsigned int	philo_number;
 	size_t			time_to_die;

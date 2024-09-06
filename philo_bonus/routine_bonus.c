@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:41:15 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/04 15:53:55 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/06 09:57:43 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,53 +14,51 @@
 
 static void	thinking(t_table *philo, unsigned int think_time)
 {
-	if (check_exit(philo) == true)
-		return ;
 	state_writer(philo, philo->philo_number, "is thinking");
-	restless_usleep(philo, think_time);
+	usleep(think_time);
 }
 
 static void	sleeping(t_table *philo)
 {
-	if (check_exit(philo) == true)
-		return ;
 	state_writer(philo, philo->philo_number, "is sleeping");
-	restless_usleep(philo, philo->time_to_sleep);
+	usleep(philo->time_to_sleep);
 }
 
 static void	take_fork(t_table *philo)
 {
-	if (check_exit(philo) == false)
-		sem_wait(philo->forks);
-	if (check_exit(philo) == false)
-		state_writer(philo, philo->philo_number, "has taken a fork");
-	if (check_exit(philo) == true || philo->philos_total == 1)
+	sem_wait(philo->forks);
+	state_writer(philo, philo->philo_number, "has taken a fork");
+	if (philo->philos_total == 1)
 		return ;
-	if (check_exit(philo) == false)
-		sem_wait(philo->forks);
-	if (check_exit(philo) == false)
-		state_writer(philo, philo->philo_number, "has taken a fork");
+	sem_wait(philo->forks);
+	state_writer(philo, philo->philo_number, "has taken a fork");
 }
 
 static void	eating(t_table *philo)
 {
 	take_fork(philo);
-	if (check_exit(philo) == true || philo->philos_total == 1)
+	if (philo->philos_total == 1)
 	{
 		sem_post(philo->forks);
 		if (philo->philos_total == 1)
-			restless_usleep(philo, philo->time_to_die * 1000);
-		sem_post(philo->forks);
+			usleep(philo->time_to_die * 1000);
 		return ;
 	}
 	state_writer(philo, philo->philo_number, "is eating");
+	sem_wait(philo->lock);
 	philo->last_meal = timestamp(philo);
-	restless_usleep(philo, philo->time_to_eat);
+	sem_post(philo->lock);
+	usleep(philo->time_to_eat);
+	sem_wait(philo->lock);
 	philo->meals_eaten++;
+	sem_post(philo->lock);
 	sem_post(philo->forks);
 	sem_post(philo->forks);
 }
 
+// creates a monitor thread to check wellbeing
+// then each thinks for an increasing amount to help with syncing
+// then philo starts the routine
 void	*routine(void *data)
 {
 	t_table			*philo;
@@ -75,7 +73,7 @@ void	*routine(void *data)
 		return (NULL); //is this correct return value?
 	}
 	thinking(philo, philo->philo_number * 100);
-	while (check_exit(philo) == false)
+	while (true)
 	{
 		eating(philo);
 		sleeping(philo);

@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:53:32 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/03 15:57:25 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/06 09:48:38 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ size_t	timestamp(t_table *table)
 
 void	state_writer(t_table *table, int philo, char *str)
 {
-	sem_wait(table->lock);
+	sem_wait(table->writer);
 	printf("%lu %d %s\n", timestamp(table), philo, str);
-	sem_post(table->lock);
+	sem_post(table->writer);
 	return ;
 }

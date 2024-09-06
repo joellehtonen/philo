@@ -6,12 +6,16 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:16:13 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/04 14:03:53 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/06 10:32:25 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
+
+// starts processes by forking
+// if parent, stores the pid of the new child in an array
+// if child, sets its philo number and starts the routine
 static int	create_processes(t_table *table)
 {
 	unsigned int	i;
