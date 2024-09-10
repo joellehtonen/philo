@@ -6,13 +6,41 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:55:26 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/10 12:00:09 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:04:06 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-void create_monitor_threads(t_table *philo)
+int		check_exit(t_table *philo)
+{
+	int	exit_value;
+	
+	sem_wait(philo->lock);
+	exit_value = philo->exit;
+	sem_post(philo->lock);
+	// sem_wait(philo->writer); //REMOVE
+	// printf("EXIT value for philo %d is %d\n", philo->philo_number, philo->exit); //REMOVE
+	// sem_post(philo->writer); //REMOVE
+	return (exit_value);
+}
+
+void	*check_cleanup(void *data)
+{
+	t_table *philo;
+
+	philo = (t_table *)data;
+	sem_wait(philo->start_cleanup);
+	sem_wait(philo->lock);
+	philo->exit = 1;
+	sem_post(philo->lock);
+	sem_wait(philo->writer); //REMOVE
+	printf("EXIT VALUE HAS BEEN CHANGED. It is now %d\n", philo->exit); //REMOVE
+	sem_post(philo->writer); //REMOVE
+	return (NULL);
+}
+
+void	create_philo_monitor_threads(t_table *philo)
 {
 	if (pthread_create(&philo->monitor, NULL,
 		&local_monitor_routine, philo) != 0)

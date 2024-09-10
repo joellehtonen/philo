@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 16:44:32 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/10 12:02:13 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/10 14:31:48 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,10 @@ void	free_and_exit(t_table *table)
 
 void	child_cleanup(t_table *philo)
 {
+	sem_wait(philo->writer);
+	printf("CLEANING philo %d\n", philo->philo_number);
+	sem_post(philo->writer);
 	pthread_join(philo->monitor, NULL);
 	pthread_join(philo->secondary_monitor, NULL);
 	exit(0);
-}
-
-void	check_cleanup(t_table *philo)
-{
-	sem_wait(philo->start_cleanup);
-	philo->exit = 1;
 }

@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:23:14 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/10 12:02:32 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/10 14:27:58 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,9 @@ size_t	timestamp(t_table *table);
 void	state_writer(t_table *table, int philo, char *str);
 void	free_and_exit(t_table *table);
 void	child_cleanup(t_table *philo);
-void	check_cleanup(t_table *philo);
-void 	create_monitor_threads(t_table *philo);
+void	*check_cleanup(void *data);
+void 	create_philo_monitor_threads(t_table *philo);
+int		check_exit(t_table *philo);
 int		ft_atoi(const char *str);
 
 

@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 16:02:48 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/10 11:32:17 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/10 14:48:04 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	create_comm_semaphores(t_table *table)
 		free_and_exit(table);
 	sem_unlink("/start_cleanup");
 	table->start_cleanup = sem_open("/start_cleanup",
-		O_CREAT | O_EXCL, 0644, 1);
+		O_CREAT | O_EXCL, 0644, 0);
 	if (table->start_cleanup == SEM_FAILED)
 		free_and_exit(table);
 	return ;

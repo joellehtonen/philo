@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:54:46 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/10 11:56:19 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/10 14:56:49 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	kill_all_processes(t_table *table)
 	unsigned int	i;
 
 	i = 0;
-	sem_wait(table->start_cleanup);
+	sem_post(table->start_cleanup);
 	while (i < table->philos_total)
 	{
 		waitpid(table->pid[i], NULL, 0);
@@ -26,29 +26,32 @@ void	kill_all_processes(t_table *table)
 	return ;
 }
 
-static void	belly_full_check(t_table *table)
+static void	*belly_full_check(void *data)
 {
 	unsigned int	eaten_enough;
-	
+	t_table 		*table;
+
+	table = (t_table*)data;
 	eaten_enough = 0;
 	while (eaten_enough < table->philos_total)
 	{
 		sem_wait(table->full_bellies);
 		eaten_enough++;
 	}
-	sem_post(table->start_cleanup);
-	return ;
+	sem_wait(table->writer); //REMOVE
+	printf("TIME TO KILL!!!\n"); //REMOVE
+	sem_post(table->writer); //REMOVE
+	kill_all_processes(table);
+	return (NULL);
 }
 
 // global monitor that intermittenly checks if a child process has died
-// also checks if hungry semaphore is 0 by trying to decrement it
-// if successful (meaning semaphore is above 0), immediately increments it back
-// kills all processes if a child has died or unable to decrement the semaphore
+// kills all processes if a child has died
 void	global_monitor_routine(t_table *table)
 {
 	pid_t			died;
 
-	if (table->meals_eaten > 0)
+	if (table->meals_required > 0)
 	{
 		if (pthread_create(&table->secondary_monitor, NULL, 
 			&belly_full_check, table) != 0)
@@ -64,17 +67,16 @@ void	global_monitor_routine(t_table *table)
 		died = waitpid(0, NULL, WNOHANG);
 		if (died > 0)
 		{
-			//printf("philo died, killing all processes\n");
 			kill_all_processes(table);
 			return ;
 		}
-		usleep(10);
+		usleep(100);
 	}
 	return ;
 }
 
 // personal monitor that checks if it's been too long since philo's last meal
-// also checks if philo has eaten enough, and decrements semaphore once if so
+// also checks if philo has eaten enough, and increments semaphore once if so
 void	*local_monitor_routine(void *data)
 {
 	size_t	time;
@@ -85,26 +87,31 @@ void	*local_monitor_routine(void *data)
 	signal_sent = 0;
 	while (true)
 	{
+		philo->exit = 0;
 		time = timestamp(philo);
 		if ((time - philo->last_meal) > philo->time_to_die)
 		{
-			child_cleanup(philo);
-			return (NULL);
+			sem_wait(philo->lock);
+			philo->exit = 1;
+			sem_post(philo->lock);
+			state_writer(philo, philo->philo_number, "died");
 		}
-		if (philo->meals_eaten >= philo->meals_required
-			&& signal_sent == 0
-			&& philo->meals_required > 0)
+		if (check_exit(philo) == true)
+		{
+			sem_wait(philo->writer); //REMOVE
+			printf("I am in monitor routine! EXIT value is %d for philo %d\n", philo->exit, philo->philo_number); //REMOVE
+			sem_post(philo->writer); //REMOVE
+			child_cleanup(philo);
+		}
+		if (philo->meals_required > 0
+			&& philo->meals_eaten >= philo->meals_required && signal_sent == 0)
 		{
 			sem_post(philo->full_bellies);
-			// int value = 0;
-			// sem_getvalue(philo->hungry_left, &value);
-			// printf("philo %d is full, the value of semaphore is %d\n", philo->philo_number, value);
 			signal_sent = 1;
+			sem_wait(philo->writer); //REMOVE
+			printf("SIGNAL SENT by philo %d\n", philo->philo_number); //REMOVE
+			sem_post(philo->writer); //REMOVE
 		}
-		if (sem_wait(philo->start_cleanup) == 0)
-			sem_post(philo->start_cleanup);
-		else
-			child_cleanup(philo);
-		//usleep(10);
+		usleep(100);
 	}
 } 
