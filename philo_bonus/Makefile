@@ -1,6 +1,6 @@
 NAME	= philo_bonus
 CC		= cc
-FLAGS	= -Wall -Wextra -Werror -pthread -g -fsanitize=address
+FLAGS	= -Wall -Wextra -Werror -pthread -g
 SOURCES	=	main_bonus.c \
 			init_bonus.c \
 			routine_bonus.c \

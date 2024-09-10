@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:23:14 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/06 13:39:17 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:02:32 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,12 @@
 typedef struct s_table
 {
 	pthread_t		monitor;
+	pthread_t		secondary_monitor;
 	sem_t			*forks;
 	sem_t			*lock;
 	sem_t			*writer;
-	//sem_t			*child_died;
-	sem_t			*hungry_left;
+	sem_t			*full_bellies;
 	sem_t			*start_cleanup;
-	sem_t			*ready_to_die;
 	unsigned int	philos_total;
 	unsigned int	philo_number;
 	size_t			time_to_die;
@@ -44,6 +43,7 @@ typedef struct s_table
 	unsigned int	meals_eaten;
 	size_t			last_meal;
 	size_t			start_time;
+	unsigned int	exit;
 	pid_t			*pid;
 }	t_table;
 
@@ -57,6 +57,8 @@ size_t	timestamp(t_table *table);
 void	state_writer(t_table *table, int philo, char *str);
 void	free_and_exit(t_table *table);
 void	child_cleanup(t_table *philo);
+void	check_cleanup(t_table *philo);
+void 	create_monitor_threads(t_table *philo);
 int		ft_atoi(const char *str);
 
 

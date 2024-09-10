@@ -6,33 +6,37 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:54:46 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/06 13:40:16 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/10 11:56:19 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-// first decrements cleanup semaphore to let children know it's time to finish
-// waits until all children have acknowledged that they're ready to die
-// then kills all processes with SIGTERM
 void	kill_all_processes(t_table *table)
 {
 	unsigned int	i;
 
 	i = 0;
 	sem_wait(table->start_cleanup);
-	while (true)
-	{
-		if (sem_wait(table->ready_to_die) == 0)
-			sem_post(table->ready_to_die);
-		else
-			break ;
-	}
 	while (i < table->philos_total)
 	{
-		kill(table->pid[i], SIGTERM);
+		waitpid(table->pid[i], NULL, 0);
 		i++;
 	}
+	return ;
+}
+
+static void	belly_full_check(t_table *table)
+{
+	unsigned int	eaten_enough;
+	
+	eaten_enough = 0;
+	while (eaten_enough < table->philos_total)
+	{
+		sem_wait(table->full_bellies);
+		eaten_enough++;
+	}
+	sem_post(table->start_cleanup);
 	return ;
 }
 
@@ -42,24 +46,29 @@ void	kill_all_processes(t_table *table)
 // kills all processes if a child has died or unable to decrement the semaphore
 void	global_monitor_routine(t_table *table)
 {
-	pid_t	died;
-	
+	pid_t			died;
+
+	if (table->meals_eaten > 0)
+	{
+		if (pthread_create(&table->secondary_monitor, NULL, 
+			&belly_full_check, table) != 0)
+		{
+			sem_wait(table->writer);
+			printf("Error. Failed to create a secondary monitor thread\n");
+			sem_post(table->writer);
+			free_and_exit(table);
+		}
+	}
 	while (true)
 	{
 		died = waitpid(0, NULL, WNOHANG);
 		if (died > 0)
 		{
+			//printf("philo died, killing all processes\n");
 			kill_all_processes(table);
 			return ;
 		}
-		if (sem_wait(table->hungry_left) == 0)
-			sem_post(table->hungry_left);
-		else
-		{
-			kill_all_processes(table);
-			return ;
-		}
-		//usleep(10);
+		usleep(10);
 	}
 	return ;
 }
@@ -79,13 +88,17 @@ void	*local_monitor_routine(void *data)
 		time = timestamp(philo);
 		if ((time - philo->last_meal) > philo->time_to_die)
 		{
-			// sem_wait(philo->child_died);
 			child_cleanup(philo);
 			return (NULL);
 		}
-		if (philo->meals_eaten >= philo->meals_required && signal_sent == 0)
+		if (philo->meals_eaten >= philo->meals_required
+			&& signal_sent == 0
+			&& philo->meals_required > 0)
 		{
-			sem_wait(philo->hungry_left);
+			sem_post(philo->full_bellies);
+			// int value = 0;
+			// sem_getvalue(philo->hungry_left, &value);
+			// printf("philo %d is full, the value of semaphore is %d\n", philo->philo_number, value);
 			signal_sent = 1;
 		}
 		if (sem_wait(philo->start_cleanup) == 0)
