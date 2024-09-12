@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:41:15 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/10 15:04:32 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/12 11:58:14 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	thinking(t_table *philo, unsigned int think_time)
 {
 	if (check_exit(philo) == true)
-		child_cleanup(philo);
+		return ;
 	state_writer(philo, philo->philo_number, "is thinking");
 	usleep(think_time);
 }
@@ -23,7 +23,7 @@ static void	thinking(t_table *philo, unsigned int think_time)
 static void	sleeping(t_table *philo)
 {
 	if (check_exit(philo) == true)
-		child_cleanup(philo);
+		return ;
 	state_writer(philo, philo->philo_number, "is sleeping");
 	usleep(philo->time_to_sleep);
 }
@@ -31,7 +31,7 @@ static void	sleeping(t_table *philo)
 static void	take_fork(t_table *philo)
 {
 	if (check_exit(philo) == true)
-		child_cleanup(philo);
+		return ;
 	sem_wait(philo->forks);
 	state_writer(philo, philo->philo_number, "has taken a fork");
 	if (philo->philos_total == 1)
@@ -41,7 +41,7 @@ static void	take_fork(t_table *philo)
 		return ;
 	}
 	if (check_exit(philo) == true)
-		child_cleanup(philo);
+		return ;
 	sem_wait(philo->forks);
 	state_writer(philo, philo->philo_number, "has taken a fork");
 }
@@ -50,7 +50,7 @@ static void	eating(t_table *philo)
 {
 	take_fork(philo);
 	if (check_exit(philo) == true)
-		child_cleanup(philo);
+		return ;
 	state_writer(philo, philo->philo_number, "is eating");
 	sem_wait(philo->lock);
 	philo->last_meal = timestamp(philo);
@@ -64,8 +64,8 @@ static void	eating(t_table *philo)
 }
 
 // creates a monitor thread to check wellbeing
-// then each thinks for an increasing amount to help with syncing
-// then philo starts the routine
+// then each philo thinks for an increasing amount to help with syncing
+// then philos start the routine
 void	*routine(void *data)
 {
 	t_table			*philo;
@@ -73,18 +73,12 @@ void	*routine(void *data)
 	philo = (t_table*)data;
 	
 	create_philo_monitor_threads(philo);
-	// sem_wait(philo->writer);
-	// printf("EXIT value is %d for philo %d\n", philo->exit, philo->philo_number);
-	// sem_post(philo->writer);
 	thinking(philo, philo->philo_number * 100);
-	while (true)
+	while (check_exit(philo) == false)
 	{
 		eating(philo);
 		sleeping(philo);
 		thinking(philo, 0);
-		sem_wait(philo->writer); //REMOVE
-		printf("EXIT value for philo %d is %d\n", philo->philo_number, philo->exit); //REMOVE
-		sem_post(philo->writer); //REMOVE
 	}
 	return (NULL);;
 }
