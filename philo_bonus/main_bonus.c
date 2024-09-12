@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:16:13 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/06 13:25:26 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/12 17:05:19 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static int	create_processes(t_table *table)
 		{
 			table->philo_number = i + 1;
 			routine(table);
+			exit(0); //free and exit???
 		}
 		i++;
 	}
@@ -95,6 +96,6 @@ int	main(int argc, char **argv)
 	create_comm_semaphores(table);
 	create_processes(table);
 	global_monitor_routine(table);
-	free_and_exit(table);
+	//free_and_exit(table);
 	return (EXIT_SUCCESS);
 }

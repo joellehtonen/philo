@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:23:14 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/12 11:43:30 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/12 17:24:52 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ typedef struct s_table
 	size_t			last_meal;
 	size_t			start_time;
 	unsigned int	exit;
+	unsigned int	all_full;
+	unsigned int	clean;
 	pid_t			*pid;
 }	t_table;
 

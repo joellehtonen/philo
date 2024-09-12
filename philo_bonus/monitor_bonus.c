@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:54:46 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/12 12:00:26 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/12 17:11:02 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,18 @@ static void	kill_all_processes(t_table *table, pid_t died)
 {
 	unsigned int	i;
 
-	i = 0;
 	sem_post(table->start_cleanup);
+	//usleep(1000);
+	i = 0;
 	while (i < table->philos_total)
 	{
 		if (table->pid[i] != died)
+		{
 			waitpid(table->pid[i], NULL, 0);
+			//kill(table->pid[i], SIGTERM);
+		}
 		i++;
+		printf("philo %d killed\n", i);
 	}
 	free_and_exit(table);
 	return ;
@@ -40,16 +45,20 @@ static void	*belly_full_check(void *data)
 		sem_wait(table->full_bellies);
 		eaten_enough++;
 	}
-	kill_all_processes(table, 0);
+	sem_wait(table->lock);
+	table->all_full = 1;
+	sem_post(table->lock);
 	return (NULL);
 }
 
 // global monitor that intermittenly checks if a child process has died
-// kills all processes if a child has died
+// first makes a secondary monitor if needed
+// kills all processes if a child died or everyone ate enough
 void	global_monitor_routine(t_table *table)
 {
 	pid_t			died;
 
+	died = 0;
 	if (table->meals_required > 0)
 	{
 		if (pthread_create(&table->secondary_monitor, NULL, 
@@ -64,11 +73,13 @@ void	global_monitor_routine(t_table *table)
 	while (true)
 	{
 		died = waitpid(0, NULL, WNOHANG);
-		if (died > 0)
+		sem_wait(table->lock);
+		if (died > 0 || table->all_full == 1)
 		{
+			sem_post(table->lock);
 			kill_all_processes(table, died);
-			break ;
 		}
+		sem_post(table->lock);
 		//usleep(100);
 	}
 	return ;
@@ -87,14 +98,16 @@ void	*local_monitor_routine(void *data)
 	while (true)
 	{
 		time = timestamp(philo);
+		sem_wait(philo->lock);
 		if ((time - philo->last_meal) > philo->time_to_die && philo->exit == 0)
 		{
-			sem_wait(philo->lock);
 			philo->exit = 1;
 			sem_post(philo->lock);
 			state_writer(philo, philo->philo_number, "died");
 			child_cleanup(philo);
 		}
+		else
+			sem_post(philo->lock);
 		if (philo->meals_required > 0
 			&& philo->meals_eaten >= philo->meals_required && signal_sent == 0)
 		{

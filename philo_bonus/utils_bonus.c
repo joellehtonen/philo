@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:55:26 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/12 11:38:42 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/12 15:31:53 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,9 @@ void	*check_cleanup(void *data)
 	philo = (t_table *)data;
 	sem_wait(philo->start_cleanup);
 	sem_post(philo->start_cleanup);
-	// printf("done waiting cleanup semaphore (i am philo %d)\n", philo->philo_number);
 	sem_wait(philo->lock);
 	philo->exit = 1;
 	sem_post(philo->lock);
-	// printf("done waiting general semaphore (i am philo %d)\n", philo->philo_number);
 	return (NULL);
 }
 

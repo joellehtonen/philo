@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:41:15 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/12 11:58:14 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/12 17:25:53 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	thinking(t_table *philo, unsigned int think_time)
 {
 	if (check_exit(philo) == true)
-		return ;
+		child_cleanup(philo);
 	state_writer(philo, philo->philo_number, "is thinking");
 	usleep(think_time);
 }
@@ -23,7 +23,7 @@ static void	thinking(t_table *philo, unsigned int think_time)
 static void	sleeping(t_table *philo)
 {
 	if (check_exit(philo) == true)
-		return ;
+		child_cleanup(philo);
 	state_writer(philo, philo->philo_number, "is sleeping");
 	usleep(philo->time_to_sleep);
 }
@@ -31,7 +31,7 @@ static void	sleeping(t_table *philo)
 static void	take_fork(t_table *philo)
 {
 	if (check_exit(philo) == true)
-		return ;
+		child_cleanup(philo);
 	sem_wait(philo->forks);
 	state_writer(philo, philo->philo_number, "has taken a fork");
 	if (philo->philos_total == 1)
@@ -41,7 +41,7 @@ static void	take_fork(t_table *philo)
 		return ;
 	}
 	if (check_exit(philo) == true)
-		return ;
+		child_cleanup(philo);
 	sem_wait(philo->forks);
 	state_writer(philo, philo->philo_number, "has taken a fork");
 }
@@ -50,7 +50,7 @@ static void	eating(t_table *philo)
 {
 	take_fork(philo);
 	if (check_exit(philo) == true)
-		return ;
+		child_cleanup(philo);
 	state_writer(philo, philo->philo_number, "is eating");
 	sem_wait(philo->lock);
 	philo->last_meal = timestamp(philo);
