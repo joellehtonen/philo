@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 16:02:48 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/10 14:48:04 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/13 10:58:52 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@ void	create_comm_semaphores(t_table *table)
 	table->full_bellies = sem_open("/full_bellies",
 		O_CREAT | O_EXCL, 0644, 0);
 	if (table->full_bellies == SEM_FAILED)
+		free_and_exit(table);
+	sem_unlink("/child_finished");
+	table->child_finished = sem_open("/child_finished",
+		O_CREAT | O_EXCL, 0644, 0);
+	if (table->child_finished == SEM_FAILED)
 		free_and_exit(table);
 	sem_unlink("/start_cleanup");
 	table->start_cleanup = sem_open("/start_cleanup",

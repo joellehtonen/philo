@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:55:26 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/12 15:31:53 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/13 11:02:37 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	create_philo_monitor_threads(t_table *philo)
 		&local_monitor_routine, philo) != 0)
 	{
 		sem_wait(philo->writer);
-		printf("Error. Failed to create a monitor thread\n");
+		printf("Error. Failed to create a philo monitor thread\n");
 		sem_post(philo->writer);
 		free_and_exit(philo);
 	}
@@ -49,7 +49,7 @@ void	create_philo_monitor_threads(t_table *philo)
 		&check_cleanup, philo) != 0)
 	{
 		sem_wait(philo->writer);
-		printf("Error. Failed to create a secondary monitor thread\n");
+		printf("Error. Failed to create a secondary philo monitor thread\n");
 		sem_post(philo->writer);
 		free_and_exit(philo);
 	}

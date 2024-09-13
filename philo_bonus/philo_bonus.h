@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:23:14 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/12 17:24:52 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/13 10:59:31 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_table
 	sem_t			*lock;
 	sem_t			*writer;
 	sem_t			*full_bellies;
+	sem_t			*child_finished;
 	sem_t			*start_cleanup;
 	unsigned int	philos_total;
 	unsigned int	philo_number;

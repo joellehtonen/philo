@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:16:13 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/12 17:05:19 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/13 10:53:38 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	create_processes(t_table *table)
 		{
 			table->philo_number = i + 1;
 			routine(table);
-			exit(0); //free and exit???
+			child_cleanup(table);
 		}
 		i++;
 	}

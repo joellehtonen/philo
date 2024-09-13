@@ -6,30 +6,24 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:54:46 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/12 17:11:02 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/13 11:58:20 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-static void	kill_all_processes(t_table *table, pid_t died)
+static void	kill_all_processes(t_table *table)
 {
 	unsigned int	i;
 
 	sem_post(table->start_cleanup);
-	//usleep(1000);
 	i = 0;
 	while (i < table->philos_total)
 	{
-		if (table->pid[i] != died)
-		{
-			waitpid(table->pid[i], NULL, 0);
-			//kill(table->pid[i], SIGTERM);
-		}
+		waitpid(table->pid[i], NULL, 0);
+		//kill(table->pid[i], SIGTERM);
 		i++;
-		printf("philo %d killed\n", i);
 	}
-	free_and_exit(table);
 	return ;
 }
 
@@ -46,8 +40,9 @@ static void	*belly_full_check(void *data)
 		eaten_enough++;
 	}
 	sem_wait(table->lock);
-	table->all_full = 1;
+	table->all_full = true;
 	sem_post(table->lock);
+	sem_post(table->child_finished);
 	return (NULL);
 }
 
@@ -72,15 +67,9 @@ void	global_monitor_routine(t_table *table)
 	}
 	while (true)
 	{
-		died = waitpid(0, NULL, WNOHANG);
-		sem_wait(table->lock);
-		if (died > 0 || table->all_full == 1)
-		{
-			sem_post(table->lock);
-			kill_all_processes(table, died);
-		}
-		sem_post(table->lock);
-		//usleep(100);
+		sem_wait(table->child_finished);
+		kill_all_processes(table);
+		free_and_exit(table);
 	}
 	return ;
 }
@@ -99,22 +88,22 @@ void	*local_monitor_routine(void *data)
 	{
 		time = timestamp(philo);
 		sem_wait(philo->lock);
-		if ((time - philo->last_meal) > philo->time_to_die && philo->exit == 0)
+		if ((time - philo->last_meal) > philo->time_to_die)
 		{
 			philo->exit = 1;
-			sem_post(philo->lock);
+			sem_post(philo->child_finished);
 			state_writer(philo, philo->philo_number, "died");
-			child_cleanup(philo);
 		}
-		else
-			sem_post(philo->lock);
+		sem_post(philo->lock);
 		if (philo->meals_required > 0
 			&& philo->meals_eaten >= philo->meals_required && signal_sent == 0)
 		{
 			sem_post(philo->full_bellies);
 			signal_sent = 1;
 		}
-		//usleep(100);
+		usleep(10);
+		if (philo->exit == 1)
+			break ;
 	}
 	return (NULL);
-} 
+}
