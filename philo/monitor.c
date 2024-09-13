@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:48:52 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/05 16:56:28 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/13 16:31:14 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,10 @@
 static int	meal_check(t_table *table, int number, unsigned int counter)
 {
 	pthread_mutex_lock(&table->mutex);
-	if (table->philo[number]->meals_eaten > table->meals_required)
+	if (table->philo[number]->meals_eaten >= table->meals_required)
 		counter++;
 	if (counter == table->philos_total)
-	{
 		table->exit = true;
-	}
 	pthread_mutex_unlock(&table->mutex);
 	return (counter);
 }

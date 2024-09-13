@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:40:41 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/05 17:06:39 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/13 16:22:11 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,26 @@ static int	init_philos(t_table *table, unsigned int index)
 }
 
 // put argument input into the corresponding variables
+// check for too high values
 static int	parse_input(t_table *table, int argc, char **argv)
 {
-	table->philos_total = ft_atoi(argv[1]);
-	table->time_to_die = ft_atoi(argv[2]);
-	table->time_to_eat = ft_atoi(argv[3]) * 1000;
-	table->time_to_sleep = ft_atoi(argv[4]) * 1000;
+	table->philos_total = ft_atoll(argv[1]);
+	table->time_to_die = ft_atoll(argv[2]);
+	table->time_to_eat = ft_atoll(argv[3]) * 1000;
+	table->time_to_sleep = ft_atoll(argv[4]) * 1000;
 	if (argc == 6)
-		table->meals_required = ft_atoi(argv[5]);
+		table->meals_required = ft_atoll(argv[5]);
+	if (table->philos_total > 400)
+	{
+		printf("Error. Too many philosophers (400 or fewer please)\n");
+		return (EXIT_FAILURE);
+	}
+	if (table->time_to_die >= INT_MAX || table->time_to_eat >= INT_MAX
+		|| table->time_to_sleep >= INT_MAX || table->meals_required >= INT_MAX)
+	{
+		printf("Error. Input cannot exceed INT_MAX\n");
+		return (EXIT_FAILURE);
+	}
 	return (EXIT_SUCCESS);
 }
 

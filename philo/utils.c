@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 13:22:50 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/05 16:24:02 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/13 13:35:29 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	check_ready(t_table *table)
 	return (false);
 }
 
-int	ft_atoi(const char *str)
+long long	ft_atoll(const char *str)
 {
 	long long	result;
 	int			sign;
@@ -71,21 +71,16 @@ int	ft_atoi(const char *str)
 	while (*str == '\t' || *str == '\n' || *str == '\v'
 		|| *str == '\f' || *str == '\r' || *str == ' ')
 		str++;
-	if (*str == '-')
+	if (*str == '-' || *str == '+')
 	{
-		sign = -1;
+		if (*str == '-')
+			sign = -1;
 		str++;
 	}
-	else if (*str == '+')
-		str++;
 	while (*str >= '0' && *str <= '9')
 	{
-		result = result * 10 + (*str - '0');
-		if (result * sign > INT_MAX)
-			return (-1);
-		else if (result * sign < INT_MIN)
-			return (0);
+		result = result * 10 + (*str - '0') * sign;
 		str++;
 	}
-	return ((int)result * sign);
+	return (result);
 }
