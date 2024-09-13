@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:41:15 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/13 10:08:04 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/13 16:45:47 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,7 @@ void	*routine(void *data)
 {
 	t_table			*philo;
 
-	philo = (t_table*)data;
-	
+	philo = (t_table *)data;
 	create_philo_monitor_threads(philo);
 	thinking(philo, philo->philo_number * 100);
 	while (check_exit(philo) == false)
@@ -86,5 +85,5 @@ void	*routine(void *data)
 		sleeping(philo);
 		thinking(philo, 0);
 	}
-	return (NULL);;
+	return (NULL);
 }

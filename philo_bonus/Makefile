@@ -4,7 +4,8 @@ FLAGS	= -Wall -Wextra -Werror -pthread -g
 SOURCES	=	main_bonus.c \
 			init_bonus.c \
 			routine_bonus.c \
-			monitor_bonus.c \
+			global_monitor_bonus.c \
+			local_monitor_bonus.c \
 			exit_bonus.c \
 			writer_bonus.c \
 			utils_bonus.c \

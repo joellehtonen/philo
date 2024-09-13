@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 16:44:32 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/13 12:13:21 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/13 16:47:17 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	unlink_semaphores(void)
 	return ;
 }
 
-static void close_semaphores(t_table *table)
+static void	close_semaphores(t_table *table)
 {
 	sem_close(table->forks);
 	sem_close(table->lock);
@@ -36,24 +36,14 @@ static void close_semaphores(t_table *table)
 
 static void	free_memory(t_table *table)
 {
-	unsigned int	i;
-
-	i = 0;
 	if (table->pid != NULL)
-	{
-		// while (i < table->philos_total)
-		// {
-		// 	free(table->pid[i]);
-		// 	i++;
-		// }
 		free(table->pid);
-	}
 	if (table != NULL)
 		free(table);
 	return ;
 }
 
-// closes semaphores and frees memory
+// closes and unlinks semaphores and frees memory
 // first checks if a secondary thread was created
 // then checks if it's still waiting for semaphores,
 // if so, increments semaphores so that the thread can finish and join
@@ -85,5 +75,6 @@ void	child_cleanup(t_table *philo)
 	pthread_join(philo->monitor, NULL);
 	pthread_join(philo->secondary_monitor, NULL);
 	close_semaphores(philo);
+	free_memory(philo);
 	exit(0);
 }

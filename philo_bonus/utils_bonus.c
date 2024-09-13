@@ -6,16 +6,16 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:55:26 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/13 11:02:37 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/13 16:46:27 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int		check_exit(t_table *philo)
+int	check_exit(t_table *philo)
 {
 	int	exit_value;
-	
+
 	sem_wait(philo->lock);
 	exit_value = philo->exit;
 	sem_post(philo->lock);
@@ -24,7 +24,7 @@ int		check_exit(t_table *philo)
 
 void	*check_cleanup(void *data)
 {
-	t_table *philo;
+	t_table	*philo;
 
 	philo = (t_table *)data;
 	sem_wait(philo->start_cleanup);
@@ -38,7 +38,7 @@ void	*check_cleanup(void *data)
 void	create_philo_monitor_threads(t_table *philo)
 {
 	if (pthread_create(&philo->monitor, NULL,
-		&local_monitor_routine, philo) != 0)
+			&local_monitor_routine, philo) != 0)
 	{
 		sem_wait(philo->writer);
 		printf("Error. Failed to create a philo monitor thread\n");
@@ -46,7 +46,7 @@ void	create_philo_monitor_threads(t_table *philo)
 		free_and_exit(philo);
 	}
 	if (pthread_create(&philo->secondary_monitor, NULL,
-		&check_cleanup, philo) != 0)
+			&check_cleanup, philo) != 0)
 	{
 		sem_wait(philo->writer);
 		printf("Error. Failed to create a secondary philo monitor thread\n");
@@ -56,7 +56,7 @@ void	create_philo_monitor_threads(t_table *philo)
 	return ;
 }
 
-int	ft_atoi(const char *str)
+long long	ft_atoll(const char *str)
 {
 	long long	result;
 	int			sign;
@@ -66,21 +66,16 @@ int	ft_atoi(const char *str)
 	while (*str == '\t' || *str == '\n' || *str == '\v'
 		|| *str == '\f' || *str == '\r' || *str == ' ')
 		str++;
-	if (*str == '-')
+	if (*str == '-' || *str == '+')
 	{
-		sign = -1;
+		if (*str == '-')
+			sign = -1;
 		str++;
 	}
-	else if (*str == '+')
-		str++;
 	while (*str >= '0' && *str <= '9')
 	{
-		result = result * 10 + (*str - '0');
-		if (result * sign > INT_MAX)
-			return (-1);
-		else if (result * sign < INT_MIN)
-			return (0);
+		result = result * 10 + (*str - '0') * sign;
 		str++;
 	}
-	return ((int)result * sign);
+	return (result);
 }
