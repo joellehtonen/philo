@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:02:27 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/10 10:18:58 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/14 10:38:22 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	sleeping(t_philo *philo)
 	restless_usleep(philo->table, philo->table->time_to_sleep);
 }
 
-// philos take a fork, and check often whether they should take the other one
+// philos take a fork, and check whether they should take the other one
 static void	take_fork(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->fork);
