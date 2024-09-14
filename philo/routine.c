@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:02:27 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/14 10:38:22 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/14 12:38:47 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	*routine(void *data)
 	while (check_ready(philo->table) == false)
 		usleep(10);
 	if (philo->number % 2 == 0)
-		thinking(philo, 100);
+		thinking(philo, philo->table->time_to_eat / 2);
 	while (check_exit(philo->table) == false)
 	{
 		eating(philo);
