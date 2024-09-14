@@ -6,12 +6,14 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:54:46 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/13 17:07:16 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/14 11:49:51 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
+// increments a semaphore to let other children exit
+// then waits their pids as confirmation
 static void	kill_all_processes(t_table *table)
 {
 	unsigned int	i;
@@ -49,7 +51,7 @@ static void	*belly_full_check(void *data)
 }
 
 // creates a second monitor thread that only checks if all philos ate enough
-static void create_second_monitor(t_table *table)
+static void	create_second_monitor(t_table *table)
 {
 	if (pthread_create(&table->secondary_monitor, NULL,
 			&belly_full_check, table) != 0)

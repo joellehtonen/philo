@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 16:44:32 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/13 16:47:17 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/14 10:35:54 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ static void	free_memory(t_table *table)
 	return ;
 }
 
-// closes and unlinks semaphores and frees memory
 // first checks if a secondary thread was created
 // then checks if it's still waiting for semaphores,
 // if so, increments semaphores so that the thread can finish and join
+// then closes and unlinks semaphores and frees memory
 void	free_and_exit(t_table *table)
 {
 	unsigned int	i;

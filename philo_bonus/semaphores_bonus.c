@@ -6,12 +6,13 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 16:02:48 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/13 16:46:59 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/14 10:29:52 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
+// creates semaphores for communicating between processes
 void	create_comm_semaphores(t_table *table)
 {
 	sem_unlink("/full_bellies");
@@ -32,6 +33,7 @@ void	create_comm_semaphores(t_table *table)
 	return ;
 }
 
+// creates semaphores meant for locking critical functions
 void	create_lock_semaphores(t_table *table)
 {
 	sem_unlink("/lock");
