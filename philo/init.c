@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:40:41 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/16 09:24:00 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/16 09:34:14 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ static int	parse_input(t_table *table, int argc, char **argv)
 {
 	table->philos_total = ft_atoll(argv[1]);
 	table->time_to_die = ft_atoll(argv[2]);
-	table->time_to_eat = ft_atoll(argv[3]) * 1000;
-	table->time_to_sleep = ft_atoll(argv[4]) * 1000;
+	table->time_to_eat = ft_atoll(argv[3]);
+	table->time_to_sleep = ft_atoll(argv[4]);
 	if (argc == 6)
 		table->meals_required = ft_atoll(argv[5]);
 	if (table->philos_total > 400)
@@ -78,6 +78,8 @@ static int	parse_input(t_table *table, int argc, char **argv)
 		printf("Error. Input values are too large\n");
 		return (EXIT_FAILURE);
 	}
+	table->time_to_eat = table->time_to_eat * 1000;
+	table->time_to_sleep = table->time_to_sleep * 1000;
 	return (EXIT_SUCCESS);
 }
 
