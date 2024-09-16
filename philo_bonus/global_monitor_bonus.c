@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:54:46 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/14 11:49:51 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/16 14:17:59 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ static void	create_second_monitor(t_table *table)
 	}
 }
 
-// global monitor that first makes a secondary monitor if needed
-// then waits for a child process to finish, either by dying or by eating
-// then kills all the other children and exits
+/*global monitor that first makes a secondary monitor if needed
+then waits for a child process to finish, either by dying or by eating
+then kills all the other children and exits*/
 void	global_monitor_routine(t_table *table)
 {
 	if (table->meals_required > 0)

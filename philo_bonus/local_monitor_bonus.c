@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:54:46 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/14 11:53:27 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/16 16:50:12 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ static void	welfare_check(t_table *philo)
 {
 	size_t	time;
 
-	time = timestamp(philo);
 	sem_wait(philo->lock);
+	time = timestamp(philo);
 	if ((time - philo->last_meal) > philo->time_to_die)
 	{
 		philo->exit = 1;
