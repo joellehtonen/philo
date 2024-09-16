@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:23:19 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/16 09:34:31 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/16 10:06:41 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,14 @@ static int	parse_input(t_table *table, int argc, char **argv)
 	if (table->philos_total > 400)
 	{
 		printf("Error. Too many philosophers (400 or fewer please)\n");
-		return (EXIT_FAILURE);
+		free_and_exit(table);
 	}
 	if (table->time_to_die >= INT_MAX || table->time_to_eat >= INT_MAX
 		|| table->time_to_sleep >= INT_MAX || table->meals_required >= INT_MAX)
 	{
-		printf("Error. Input values are too large\n");
-		return (EXIT_FAILURE);
+		printf("Error. Input values are too big\n");
+		free_and_exit(table);
 	}
-	table->time_to_eat = table->time_to_eat * 1000;
-	table->time_to_sleep = table->time_to_sleep * 1000;
 	return (EXIT_SUCCESS);
 }
 

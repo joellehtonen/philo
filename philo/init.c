@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:40:41 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/16 09:34:14 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/16 10:05:20 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,9 @@ static int	parse_input(t_table *table, int argc, char **argv)
 	if (table->time_to_die >= INT_MAX || table->time_to_eat >= INT_MAX
 		|| table->time_to_sleep >= INT_MAX || table->meals_required >= INT_MAX)
 	{
-		printf("Error. Input values are too large\n");
+		printf("Error. Input values are too big\n");
 		return (EXIT_FAILURE);
 	}
-	table->time_to_eat = table->time_to_eat * 1000;
-	table->time_to_sleep = table->time_to_sleep * 1000;
 	return (EXIT_SUCCESS);
 }
 

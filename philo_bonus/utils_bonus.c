@@ -6,11 +6,22 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:55:26 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/14 12:16:18 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/16 10:00:58 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
+
+// "sleep" which periodically checks if it's time to exit
+void	restless_usleep(t_table *table, size_t time)
+{
+	time = time * 1000;
+	while (time > 0 && check_exit(table) == false)
+	{
+		usleep(100000);
+		time -= 100000;
+	}
+}
 
 int	check_exit(t_table *philo)
 {

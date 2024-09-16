@@ -6,13 +6,13 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:02:27 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/14 12:38:47 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/16 09:57:43 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	thinking(t_philo *philo, unsigned int think_time)
+static void	thinking(t_philo *philo, size_t think_time)
 {
 	if (check_exit(philo->table) == true)
 		return ;
@@ -53,7 +53,7 @@ static void	eating(t_philo *philo)
 	{
 		release_forks(philo);
 		if (philo->table->philos_total == 1)
-			restless_usleep(philo->table, philo->table->time_to_die * 1000);
+			restless_usleep(philo->table, philo->table->time_to_die);
 		return ;
 	}
 	state_writer(philo->table, philo->number, "is eating");
