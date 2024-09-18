@@ -1,6 +1,6 @@
 NAME	= philo_bonus
 CC		= cc
-FLAGS	= -Wall -Wextra -Werror -pthread -g
+FLAGS	= -Wall -Wextra -Werror -pthread
 SOURCES	=	main_bonus.c \
 			init_bonus.c \
 			routine_bonus.c \
