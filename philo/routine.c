@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:02:27 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/16 16:13:36 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/19 11:00:06 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	eating(t_philo *philo)
 	{
 		release_forks(philo);
 		if (philo->table->philos_total == 1)
-			restless_usleep(philo->table, philo->table->time_to_die);
+			restless_usleep(philo->table, philo->table->time_to_die + 1);
 		return ;
 	}
 	state_writer(philo->table, philo->number, "is eating");

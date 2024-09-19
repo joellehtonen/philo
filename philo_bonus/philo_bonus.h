@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:23:14 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/16 16:31:19 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/19 11:34:38 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void		*check_cleanup(void *data);
 void		create_philo_monitor_threads(t_table *philo);
 int			check_exit(t_table *philo);
 void		restless_usleep(t_table *table, size_t time);
+int			meal_check(t_table *philo, int signal_sent);
 long long	ft_atoll(const char *str);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:41:15 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/16 16:31:14 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/19 11:37:11 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static void	thinking(t_table *philo, size_t think_time)
 		return ;
 	state_writer(philo, philo->philo_number, "is thinking");
 	restless_usleep(philo, think_time);
+	return ;
 }
 
 static void	sleeping(t_table *philo)
@@ -26,6 +27,7 @@ static void	sleeping(t_table *philo)
 		return ;
 	state_writer(philo, philo->philo_number, "is sleeping");
 	restless_usleep(philo, philo->time_to_sleep);
+	return ;
 }
 
 static void	take_fork(t_table *philo)
@@ -40,7 +42,7 @@ static void	take_fork(t_table *philo)
 	if (philo->philos_total == 1)
 	{
 		sem_post(philo->forks);
-		restless_usleep(philo, philo->time_to_die);
+		restless_usleep(philo, philo->time_to_die + 1);
 		return ;
 	}
 	sem_wait(philo->forks);
@@ -50,23 +52,24 @@ static void	take_fork(t_table *philo)
 		return ;
 	}
 	state_writer(philo, philo->philo_number, "has taken a fork");
+	return ;
 }
 
-static void	eating(t_table *philo)
+static int	eating(t_table *philo, int signal_sent)
 {
 	take_fork(philo);
 	if (check_exit(philo) == true)
-		return ;
-	state_writer(philo, philo->philo_number, "is eating");
+		return (signal_sent);
 	sem_wait(philo->lock);
+	state_writer(philo, philo->philo_number, "is eating");
 	philo->last_meal = timestamp(philo);
 	sem_post(philo->lock);
 	restless_usleep(philo, philo->time_to_eat);
-	sem_wait(philo->lock);
 	philo->meals_eaten++;
-	sem_post(philo->lock);
+	signal_sent = meal_check(philo, signal_sent);
 	sem_post(philo->forks);
 	sem_post(philo->forks);
+	return (signal_sent);
 }
 
 // creates a monitor thread to check wellbeing
@@ -75,14 +78,16 @@ static void	eating(t_table *philo)
 void	*routine(void *data)
 {
 	t_table			*philo;
+	int 			signal_sent;
 
 	philo = (t_table *)data;
+	signal_sent = 0;
 	create_philo_monitor_threads(philo);
 	if (philo->philo_number % 2 == 0)
 		thinking(philo, philo->time_to_eat / 2);
 	while (check_exit(philo) == false)
 	{
-		eating(philo);
+		signal_sent = eating(philo, signal_sent);
 		sleeping(philo);
 		thinking(philo, 0);
 	}
