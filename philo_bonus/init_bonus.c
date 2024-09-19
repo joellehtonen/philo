@@ -22,7 +22,7 @@ static int	parse_input(t_table *table, int argc, char **argv)
 		table->meals_required = ft_atoll(argv[5]);
 	if (table->philos_total > 400)
 	{
-		printf("Error. Too many philosophers (400 or fewer please)\n");
+		printf("Error. Too many philosophers (300 or fewer please)\n");
 		free_and_exit(table, 1);
 	}
 	if (table->time_to_die >= INT_MAX || table->time_to_eat >= INT_MAX

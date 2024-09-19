@@ -48,9 +48,11 @@ static void	welfare_check(t_table *philo)
 	time = timestamp() - philo->start_time;
 	if ((time - philo->last_meal) > philo->time_to_die)
 	{
-		philo->exit = true;
 		sem_post(philo->lock);
 		state_writer(philo, philo->philo_number, "died");
+		sem_wait(philo->lock);
+		philo->exit = true;
+		sem_post(philo->lock);
 		time_to_exit(philo);
 	}
 	else

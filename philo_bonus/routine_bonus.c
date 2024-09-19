@@ -62,7 +62,7 @@ static void	eating(t_table *philo)
 		return ;
 	state_writer(philo, philo->philo_number, "is eating");
 	sem_wait(philo->lock);
-	philo->last_meal = timestamp();
+	philo->last_meal = timestamp() - philo->start_time;
 	sem_post(philo->lock);
 	restless_usleep(philo, philo->time_to_eat);
 	philo->meals_eaten++;

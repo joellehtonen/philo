@@ -16,7 +16,6 @@ static void	unlink_semaphores(void)
 {
 	sem_unlink("/forks");
 	sem_unlink("/lock");
-	sem_unlink("/writer");
 	sem_unlink("/all_ready");
 	sem_unlink("/full_bellies");
 	sem_unlink("/child_finished");
@@ -28,7 +27,6 @@ static void	close_semaphores(t_table *table)
 {
 	sem_close(table->forks);
 	sem_close(table->lock);
-	sem_close(table->writer);
 	sem_close(table->all_ready);
 	sem_close(table->full_bellies);
 	sem_close(table->child_finished);
