@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:23:19 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/16 10:06:41 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/19 15:18:17 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ static int	parse_input(t_table *table, int argc, char **argv)
 	if (table->philos_total > 400)
 	{
 		printf("Error. Too many philosophers (400 or fewer please)\n");
-		free_and_exit(table);
+		free_and_exit(table, 1);
 	}
 	if (table->time_to_die >= INT_MAX || table->time_to_eat >= INT_MAX
 		|| table->time_to_sleep >= INT_MAX || table->meals_required >= INT_MAX)
 	{
 		printf("Error. Input values are too big\n");
-		free_and_exit(table);
+		free_and_exit(table, 1);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -40,7 +40,7 @@ int	init_table(t_table **table, int argc, char **argv)
 	if (*table == NULL)
 	{
 		printf("Error. Failed to mallocate the table\n");
-		free_and_exit(*table);
+		free_and_exit(*table, 1);
 	}
 	memset(*table, 0, sizeof(t_table));
 	if (parse_input(*table, argc, argv) == EXIT_FAILURE)
@@ -49,7 +49,7 @@ int	init_table(t_table **table, int argc, char **argv)
 	if ((*table)->pid == NULL)
 	{
 		printf("Error. Failed to mallocate the pid array\n");
-		free_and_exit(*table);
+		free_and_exit(*table, 1);
 	}
 	return (EXIT_SUCCESS);
 }

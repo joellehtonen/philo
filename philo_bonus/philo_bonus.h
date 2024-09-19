@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:23:14 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/19 13:55:23 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:25:02 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_table
 	unsigned int	exit;
 	unsigned int	all_full;
 	unsigned int	clean;
+	unsigned int	signal_sent;
 	pid_t			*pid;
 }	t_table;
 
@@ -57,16 +58,18 @@ void		create_comm_semaphores(t_table *table);
 void		*routine(void *data);
 void		*local_monitor_routine(void *data);
 void		global_monitor_routine(t_table *table);
-size_t		timestamp(t_table *table);
+size_t		timestamp();
 void		state_writer(t_table *table, int philo, char *str);
-void		free_and_exit(t_table *table);
+void		free_and_exit(t_table *table, int error);
 void		child_cleanup(t_table *philo);
 void		*check_cleanup(void *data);
 void		create_philo_monitor_threads(t_table *philo);
 int			check_exit(t_table *philo);
 void		restless_usleep(t_table *table, size_t time);
-int			meal_check(t_table *philo, int signal_sent);
+void		meal_check(t_table *philo);
 void		time_to_exit(t_table *philo);
+void		wait_children_to_exit(t_table *table);
+size_t		think_time(t_table *philo);
 long long	ft_atoll(const char *str);
 
 #endif

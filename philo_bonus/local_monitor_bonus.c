@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:54:46 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/19 14:20:53 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:28:06 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,17 @@ void	*check_cleanup(void *data)
 }
 
 // checks if the philo has eaten enough, and increments semaphore once if so
-int	meal_check(t_table *philo, int signal_sent)
+void	meal_check(t_table *philo)
 {
 	if (philo->meals_required > 0
-		&& philo->meals_eaten >= philo->meals_required && signal_sent == 0)
+		&& philo->meals_eaten >= philo->meals_required
+		&& philo->signal_sent == false)
 	{
 		sem_post(philo->full_bellies);
-		signal_sent = 1;
+		philo->signal_sent = true;
 	}
-	return (signal_sent);
-}
+	return ;
+} 
 
 // checks if it's been too long since philo's last meal
 // if so, alters a variable to exit
@@ -44,7 +45,7 @@ static void	welfare_check(t_table *philo)
 	size_t			time;
 
 	sem_wait(philo->lock);
-	time = timestamp(philo);
+	time = timestamp() - philo->start_time;
 	if ((time - philo->last_meal) > philo->time_to_die)
 	{
 		if (philo->exit == false)
@@ -87,7 +88,8 @@ void	create_philo_monitor_threads(t_table *philo)
 		sem_wait(philo->writer);
 		printf("Error. Failed to create a philo monitor thread\n");
 		sem_post(philo->writer);
-		free_and_exit(philo);
+		time_to_exit(philo);
+		child_cleanup(philo);
 	}
 	if (pthread_create(&philo->secondary_monitor, NULL,
 			&check_cleanup, philo) != 0)
@@ -95,7 +97,8 @@ void	create_philo_monitor_threads(t_table *philo)
 		sem_wait(philo->writer);
 		printf("Error. Failed to create a secondary philo monitor thread\n");
 		sem_post(philo->writer);
-		free_and_exit(philo);
+		time_to_exit(philo);
+		child_cleanup(philo);
 	}
 	return ;
 }

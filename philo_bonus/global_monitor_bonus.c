@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:54:46 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/19 14:21:11 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:16:38 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // increments a semaphore to let other children exit
 // then waits their pids as confirmation
-static void	kill_all_processes(t_table *table)
+void	wait_children_to_exit(t_table *table)
 {
 	unsigned int	i;
 
@@ -59,7 +59,7 @@ static void	create_second_monitor(t_table *table)
 		sem_wait(table->writer);
 		printf("Error. Failed to create a secondary monitor thread\n");
 		sem_post(table->writer);
-		free_and_exit(table);
+		free_and_exit(table, 1);
 	}
 }
 
@@ -76,8 +76,8 @@ void	global_monitor_routine(t_table *table)
 	while (true)
 	{
 		sem_wait(table->child_finished);
-		kill_all_processes(table);
-		free_and_exit(table);
+		wait_children_to_exit(table);
+		free_and_exit(table, 0);
 	}
 	return ;
 }

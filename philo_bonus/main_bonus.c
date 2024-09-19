@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:16:13 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/19 13:41:04 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:28:00 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,23 @@ static int	create_processes(t_table *table)
 	unsigned int	i;
 	pid_t			pid;
 
-	table->start_time = timestamp(table);
+	table->start_time = timestamp();
 	i = 0;
 	while (i < table->philos_total)
 	{
 		pid = fork();
 		if (pid < 0)
-			return (EXIT_FAILURE);
+		{
+			time_to_exit(table);
+			wait_children_to_exit(table);
+			free_and_exit(table, 1);
+		}
 		else if (pid > 0)
 			table->pid[i] = pid;
 		else if (pid == 0)
 		{
 			table->philo_number = i + 1;
 			routine(table);
-			child_cleanup(table);
 		}
 		i++;
 	}

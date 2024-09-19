@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 16:44:32 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/19 12:53:28 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/19 15:16:46 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	free_memory(t_table *table)
 // then checks if it's still waiting for semaphores,
 // if so, increments semaphores so that the thread can finish and join
 // then closes and unlinks semaphores and frees memory
-void	free_and_exit(t_table *table)
+void	free_and_exit(t_table *table, int error)
 {
 	unsigned int	i;
 
@@ -69,7 +69,7 @@ void	free_and_exit(t_table *table)
 	close_semaphores(table);
 	unlink_semaphores();
 	free_memory(table);
-	exit(0);
+	exit(error);
 }
 
 void	child_cleanup(t_table *philo)
