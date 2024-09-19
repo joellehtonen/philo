@@ -38,6 +38,7 @@ void	time_to_exit(t_table *philo)
 		sem_post(philo->start_cleanup);
 		i++;
 	}
+	sem_post(philo->child_finished);
 }
 
 int	check_exit(t_table *philo)

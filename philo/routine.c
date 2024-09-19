@@ -58,7 +58,7 @@ static void	eating(t_philo *philo)
 	}
 	state_writer(philo->table, philo->number, "is eating");
 	pthread_mutex_lock(&philo->table->mutex);
-	philo->last_meal = timestamp(philo->table);
+	philo->last_meal = timestamp() - philo->table->start_time;
 	pthread_mutex_unlock(&philo->table->mutex);
 	restless_usleep(philo->table, philo->table->time_to_eat);
 	pthread_mutex_lock(&philo->table->mutex);

@@ -46,7 +46,6 @@ static void	*belly_full_check(void *data)
 	table->all_full = true;
 	sem_post(table->lock);
 	time_to_exit(table);
-	sem_post(table->child_finished);
 	return (NULL);
 }
 
@@ -56,10 +55,11 @@ static void	create_second_monitor(t_table *table)
 	if (pthread_create(&table->secondary_monitor, NULL,
 			&belly_full_check, table) != 0)
 	{
-		sem_wait(table->writer);
+		sem_wait(table->lock);
 		printf("Error. Failed to create a secondary monitor thread\n");
-		sem_post(table->writer);
-		free_and_exit(table, 1);
+		sem_post(table->lock);
+		time_to_exit(table);
+		child_cleanup(table);
 	}
 }
 
@@ -68,9 +68,6 @@ then waits for a child process to finish, either by dying or by eating
 then kills all the other children and exits*/
 void	global_monitor_routine(t_table *table)
 {
-	unsigned int	i;
-
-	i = 0;
 	if (table->meals_required > 0)
 		create_second_monitor(table);
 	while (true)

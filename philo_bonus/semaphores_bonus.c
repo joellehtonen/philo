@@ -46,11 +46,6 @@ void	create_lock_semaphores(t_table *table)
 			O_CREAT | O_EXCL, 0644, 1);
 	if (table->lock == SEM_FAILED)
 		free_and_exit(table, 1);
-	sem_unlink("/writer");
-	table->writer = sem_open("/writer",
-			O_CREAT | O_EXCL, 0644, 1);
-	if (table->writer == SEM_FAILED)
-		free_and_exit(table, 1);
 	sem_unlink("/forks");
 	table->forks = sem_open("/forks",
 			O_CREAT | O_EXCL, 0644, table->philos_total);

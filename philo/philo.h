@@ -56,7 +56,7 @@ void		*routine(void *data);
 void		monitor_routine(t_table *table);
 void		welfare_check(t_table *table, int number);
 void		state_writer(t_table *table, int philo, char *str);
-size_t		timestamp(t_table *table);
+size_t		timestamp();
 void		free_and_exit(t_table *table);
 void		restless_usleep(t_table *table, size_t time);
 void		release_forks(t_philo *philo);

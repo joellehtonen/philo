@@ -41,7 +41,7 @@ static void	destroy_mutexes(t_table *table)
 		i++;
 	}
 	pthread_mutex_destroy(&table->mutex);
-	pthread_mutex_destroy(&table->writer);
+	//pthread_mutex_destroy(&table->writer);
 }
 
 static void	join_threads(t_table *table)
