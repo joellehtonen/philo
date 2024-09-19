@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:23:14 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/19 11:34:38 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/19 13:55:23 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct s_table
 	sem_t			*forks;
 	sem_t			*lock;
 	sem_t			*writer;
+	sem_t			*all_ready;
 	sem_t			*full_bellies;
 	sem_t			*child_finished;
 	sem_t			*start_cleanup;
@@ -65,6 +66,7 @@ void		create_philo_monitor_threads(t_table *philo);
 int			check_exit(t_table *philo);
 void		restless_usleep(t_table *table, size_t time);
 int			meal_check(t_table *philo, int signal_sent);
+void		time_to_exit(t_table *philo);
 long long	ft_atoll(const char *str);
 
 #endif

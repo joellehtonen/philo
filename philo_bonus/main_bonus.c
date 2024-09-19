@@ -6,11 +6,23 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:16:13 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/16 16:31:37 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/19 13:41:04 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
+
+static void	all_ready(t_table *table)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (i < table->philos_total)
+	{
+		sem_post(table->all_ready);
+		i++;
+	}
+}
 
 // starts processes by forking
 // if parent, stores the pid of the new child in an array
@@ -37,6 +49,7 @@ static int	create_processes(t_table *table)
 		}
 		i++;
 	}
+	all_ready(table);
 	return (EXIT_SUCCESS);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:55:26 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/16 16:14:34 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/19 13:36:18 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,18 @@ void	restless_usleep(t_table *table, size_t time)
 	}
 }
 
+void	time_to_exit(t_table *philo)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (i < philo->philos_total)
+	{
+		sem_post(philo->start_cleanup);
+		i++;
+	}
+}
+
 int	check_exit(t_table *philo)
 {
 	int	exit_value;
@@ -31,40 +43,6 @@ int	check_exit(t_table *philo)
 	exit_value = philo->exit;
 	sem_post(philo->lock);
 	return (exit_value);
-}
-
-void	*check_cleanup(void *data)
-{
-	t_table	*philo;
-
-	philo = (t_table *)data;
-	sem_wait(philo->start_cleanup);
-	sem_post(philo->start_cleanup);
-	sem_wait(philo->lock);
-	philo->exit = 1;
-	sem_post(philo->lock);
-	return (NULL);
-}
-
-void	create_philo_monitor_threads(t_table *philo)
-{
-	if (pthread_create(&philo->monitor, NULL,
-			&local_monitor_routine, philo) != 0)
-	{
-		sem_wait(philo->writer);
-		printf("Error. Failed to create a philo monitor thread\n");
-		sem_post(philo->writer);
-		free_and_exit(philo);
-	}
-	if (pthread_create(&philo->secondary_monitor, NULL,
-			&check_cleanup, philo) != 0)
-	{
-		sem_wait(philo->writer);
-		printf("Error. Failed to create a secondary philo monitor thread\n");
-		sem_post(philo->writer);
-		free_and_exit(philo);
-	}
-	return ;
 }
 
 long long	ft_atoll(const char *str)

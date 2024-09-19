@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 16:02:48 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/16 16:31:23 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/19 12:53:34 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 // creates semaphores for communicating between processes
 void	create_comm_semaphores(t_table *table)
 {
+	sem_unlink("/all_ready");
+	table->all_ready = sem_open("/all_ready",
+			O_CREAT | O_EXCL, 0644, 0);
+	if (table->all_ready == SEM_FAILED)
+		free_and_exit(table);
 	sem_unlink("/full_bellies");
 	table->full_bellies = sem_open("/full_bellies",
 			O_CREAT | O_EXCL, 0644, 0);

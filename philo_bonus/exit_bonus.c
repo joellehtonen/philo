@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 16:44:32 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/14 10:35:54 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/19 12:53:28 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static void	unlink_semaphores(void)
 	sem_unlink("/forks");
 	sem_unlink("/lock");
 	sem_unlink("/writer");
+	sem_unlink("/all_ready");
 	sem_unlink("/full_bellies");
 	sem_unlink("/child_finished");
 	sem_unlink("/start_cleanup");
@@ -28,6 +29,7 @@ static void	close_semaphores(t_table *table)
 	sem_close(table->forks);
 	sem_close(table->lock);
 	sem_close(table->writer);
+	sem_close(table->all_ready);
 	sem_close(table->full_bellies);
 	sem_close(table->child_finished);
 	sem_close(table->start_cleanup);

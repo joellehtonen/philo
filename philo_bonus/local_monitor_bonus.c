@@ -6,11 +6,23 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:54:46 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/19 11:35:02 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/19 13:56:26 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
+
+void	*check_cleanup(void *data)
+{
+	t_table	*philo;
+
+	philo = (t_table *)data;
+	sem_wait(philo->start_cleanup);
+	sem_wait(philo->lock);
+	philo->exit = true;
+	sem_post(philo->lock);
+	return (NULL);
+}
 
 // checks if the philo has eaten enough, and increments semaphore once if so
 int	meal_check(t_table *philo, int signal_sent)
@@ -29,15 +41,17 @@ int	meal_check(t_table *philo, int signal_sent)
 // and increments a semaphore to let the parent know that a child died
 static void	welfare_check(t_table *philo)
 {
-	size_t	time;
-
+	size_t			time;
+	
 	sem_wait(philo->lock);
 	time = timestamp(philo);
 	if ((time - philo->last_meal) > philo->time_to_die)
 	{
-		philo->exit = 1;
+		if (philo->exit ==  false)
+			state_writer(philo, philo->philo_number, "died");
+		philo->exit = true;
+		time_to_exit(philo);
 		sem_post(philo->child_finished);
-		state_writer(philo, philo->philo_number, "died");
 	}
 	sem_post(philo->lock);
 	return ;
@@ -63,4 +77,25 @@ void	*local_monitor_routine(void *data)
 			sem_post(philo->lock);
 	}
 	return (NULL);
+}
+
+void	create_philo_monitor_threads(t_table *philo)
+{
+	if (pthread_create(&philo->monitor, NULL,
+			&local_monitor_routine, philo) != 0)
+	{
+		sem_wait(philo->writer);
+		printf("Error. Failed to create a philo monitor thread\n");
+		sem_post(philo->writer);
+		free_and_exit(philo);
+	}
+	if (pthread_create(&philo->secondary_monitor, NULL,
+			&check_cleanup, philo) != 0)
+	{
+		sem_wait(philo->writer);
+		printf("Error. Failed to create a secondary philo monitor thread\n");
+		sem_post(philo->writer);
+		free_and_exit(philo);
+	}
+	return ;
 }

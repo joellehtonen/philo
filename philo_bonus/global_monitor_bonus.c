@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:54:46 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/16 14:17:59 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/19 14:01:22 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static void	kill_all_processes(t_table *table)
 {
 	unsigned int	i;
 
-	sem_post(table->start_cleanup);
 	i = 0;
 	while (i < table->philos_total)
 	{
@@ -46,6 +45,7 @@ static void	*belly_full_check(void *data)
 	sem_wait(table->lock);
 	table->all_full = true;
 	sem_post(table->lock);
+	time_to_exit(table);
 	sem_post(table->child_finished);
 	return (NULL);
 }
@@ -68,11 +68,14 @@ then waits for a child process to finish, either by dying or by eating
 then kills all the other children and exits*/
 void	global_monitor_routine(t_table *table)
 {
+	unsigned int	i;
+
+	i = 0;
 	if (table->meals_required > 0)
 		create_second_monitor(table);
 	while (true)
 	{
-		sem_wait(table->child_finished);
+		//sem_wait(table->child_finished);
 		kill_all_processes(table);
 		free_and_exit(table);
 	}

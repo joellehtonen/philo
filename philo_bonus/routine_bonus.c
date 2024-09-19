@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:41:15 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/19 11:37:11 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/19 13:09:18 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,9 @@ void	*routine(void *data)
 
 	philo = (t_table *)data;
 	signal_sent = 0;
+	sem_wait(philo->all_ready);
 	create_philo_monitor_threads(philo);
-	if (philo->philo_number % 2 == 0)
+	if (philo->philo_number % 2 == 0 && check_exit(philo) == false)
 		thinking(philo, philo->time_to_eat / 2);
 	while (check_exit(philo) == false)
 	{
