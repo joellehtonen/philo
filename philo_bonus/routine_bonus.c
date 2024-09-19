@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:41:15 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/19 13:09:18 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/19 14:20:07 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static int	eating(t_table *philo, int signal_sent)
 void	*routine(void *data)
 {
 	t_table			*philo;
-	int 			signal_sent;
+	int				signal_sent;
 
 	philo = (t_table *)data;
 	signal_sent = 0;

@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:54:46 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/19 14:01:22 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/19 14:21:11 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	global_monitor_routine(t_table *table)
 		create_second_monitor(table);
 	while (true)
 	{
-		//sem_wait(table->child_finished);
+		sem_wait(table->child_finished);
 		kill_all_processes(table);
 		free_and_exit(table);
 	}

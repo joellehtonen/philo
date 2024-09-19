@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:54:46 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/19 13:56:26 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/19 14:20:53 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ int	meal_check(t_table *philo, int signal_sent)
 static void	welfare_check(t_table *philo)
 {
 	size_t			time;
-	
+
 	sem_wait(philo->lock);
 	time = timestamp(philo);
 	if ((time - philo->last_meal) > philo->time_to_die)
 	{
-		if (philo->exit ==  false)
+		if (philo->exit == false)
 			state_writer(philo, philo->philo_number, "died");
 		philo->exit = true;
 		time_to_exit(philo);
