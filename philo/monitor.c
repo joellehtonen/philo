@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:48:52 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/16 16:50:57 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/20 09:48:00 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	welfare_check(t_table *table, int number)
 	size_t	time;
 
 	pthread_mutex_lock(&table->mutex);
-	time = timestamp(table);
+	time = timestamp() - table->start_time;
 	if ((time - table->philo[number]->last_meal) > table->time_to_die)
 	{
 		table->exit = true;

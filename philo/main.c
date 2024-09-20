@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 10:55:23 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/10 10:17:21 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/20 09:47:16 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	create_threads(t_table *table)
 {
 	unsigned int	i;
 
-	table->start_time = timestamp(table);
+	table->start_time = timestamp();
 	i = 0;
 	while (i < table->philos_total)
 	{

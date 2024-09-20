@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:54:30 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/05 16:34:54 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/20 09:45:42 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ static void	destroy_mutexes(t_table *table)
 		i++;
 	}
 	pthread_mutex_destroy(&table->mutex);
-	//pthread_mutex_destroy(&table->writer);
 }
 
 static void	join_threads(t_table *table)

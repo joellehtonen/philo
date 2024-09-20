@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:52:31 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/20 09:39:53 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/20 09:43:44 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ size_t	timestamp()
 	size_t			milliseconds;
 
 	gettimeofday(&time, NULL);
-	pthread_mutex_lock(&table->mutex);
 	milliseconds = (time.tv_sec * 1000) + (time.tv_usec / 1000);
 	return (milliseconds);
 }

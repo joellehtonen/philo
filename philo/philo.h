@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 13:23:41 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/16 09:57:14 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/20 09:45:08 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ typedef struct s_philo
 typedef struct s_table
 {
 	pthread_mutex_t	mutex;
-	pthread_mutex_t	writer;
 	unsigned int	philos_total;
 	size_t			time_to_die;
 	size_t			time_to_eat;
