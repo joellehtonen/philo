@@ -15,17 +15,13 @@
 // "sleep" which periodically checks if it's time to exit
 void	restless_usleep(t_table *table, size_t time)
 {
-	// time = time * 1000;
-	// while (time > 0 && check_exit(table) == false)
-	// {
-	// 	usleep(500);
-	// 	time -= 100000;
-	// }
 	size_t	wake_up;
 	
 	wake_up = timestamp() + time;
 	while (timestamp() < wake_up && check_exit(table) == false)
+	{
 		usleep(100);
+	}
 }
 
 void	time_to_exit(t_table *philo)
@@ -38,6 +34,7 @@ void	time_to_exit(t_table *philo)
 		sem_post(philo->start_cleanup);
 		i++;
 	}
+	sem_post(philo->child_finished);
 }
 
 int	check_exit(t_table *philo)
@@ -53,13 +50,17 @@ int	check_exit(t_table *philo)
 size_t	think_time(t_table *philo)
 {
 	long		duration;
+	long		longer;
 
 	sem_wait(philo->lock);
-	duration = (philo->time_to_die - philo->time_to_eat) / 20;
+	if (philo->time_to_eat >= philo->time_to_sleep)
+		longer = philo->time_to_eat;
+	else
+		longer = philo->time_to_sleep;
+	duration = (philo->time_to_die - longer) / 20;
 	sem_post(philo->lock);
 	if (duration < 0)
 		duration = 0;
-	//printf("THINK TIME IS %ld\n", duration);
 	return ((size_t)duration);
 }
 

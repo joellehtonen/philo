@@ -60,9 +60,9 @@ static void	eating(t_table *philo)
 	take_fork(philo);
 	if (check_exit(philo) == true)
 		return ;
-	sem_wait(philo->lock);
 	state_writer(philo, philo->philo_number, "is eating");
-	philo->last_meal = timestamp();
+	sem_wait(philo->lock);
+	philo->last_meal = timestamp() - philo->start_time;
 	sem_post(philo->lock);
 	restless_usleep(philo, philo->time_to_eat);
 	philo->meals_eaten++;

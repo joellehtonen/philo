@@ -19,11 +19,11 @@ static int	init_global_mutexes(t_table *table)
 		printf("Error. Failed to init general mutex\n");
 		return (EXIT_FAILURE);
 	}
-	if (pthread_mutex_init(&table->writer, NULL) != 0)
+	/*if (pthread_mutex_init(&table->writer, NULL) != 0)
 	{
 		printf("Error. Failed to init writer mutex\n");
 		return (EXIT_FAILURE);
-	}
+	}*/
 	return (EXIT_SUCCESS);
 }
 

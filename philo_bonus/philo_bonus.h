@@ -31,7 +31,6 @@ typedef struct s_table
 	pthread_t		secondary_monitor;
 	sem_t			*forks;
 	sem_t			*lock;
-	sem_t			*writer;
 	sem_t			*all_ready;
 	sem_t			*full_bellies;
 	sem_t			*child_finished;

@@ -48,13 +48,15 @@ static void	welfare_check(t_table *philo)
 	time = timestamp() - philo->start_time;
 	if ((time - philo->last_meal) > philo->time_to_die)
 	{
-		if (philo->exit == false)
-			state_writer(philo, philo->philo_number, "died");
+		sem_post(philo->lock);
+		state_writer(philo, philo->philo_number, "died");
+		sem_wait(philo->lock);
 		philo->exit = true;
+		sem_post(philo->lock);
 		time_to_exit(philo);
-		sem_post(philo->child_finished);
 	}
-	sem_post(philo->lock);
+	else
+		sem_post(philo->lock);
 	return ;
 }
 
@@ -85,18 +87,18 @@ void	create_philo_monitor_threads(t_table *philo)
 	if (pthread_create(&philo->monitor, NULL,
 			&local_monitor_routine, philo) != 0)
 	{
-		sem_wait(philo->writer);
+		sem_wait(philo->lock);
 		printf("Error. Failed to create a philo monitor thread\n");
-		sem_post(philo->writer);
+		sem_post(philo->lock);
 		time_to_exit(philo);
 		child_cleanup(philo);
 	}
 	if (pthread_create(&philo->secondary_monitor, NULL,
 			&check_cleanup, philo) != 0)
 	{
-		sem_wait(philo->writer);
+		sem_wait(philo->lock);
 		printf("Error. Failed to create a secondary philo monitor thread\n");
-		sem_post(philo->writer);
+		sem_post(philo->lock);
 		time_to_exit(philo);
 		child_cleanup(philo);
 	}

@@ -26,8 +26,8 @@ void	state_writer(t_table *table, int philo, char *str)
 {
 	if (table->exit == true)
 		return ;
-	sem_wait(table->writer);
+	sem_wait(table->lock);
 	printf("%lu %d %s\n", timestamp() - table->start_time, philo, str);
-	sem_post(table->writer);
+	sem_post(table->lock);
 	return ;
 }
