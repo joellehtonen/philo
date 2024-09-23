@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:23:14 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/23 14:20:29 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/23 14:32:26 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # include <stdbool.h> //for true and false
 # include <semaphore.h> //for semaphores
 # include <signal.h> //for kill
-# include <sys/wait.h> //for WNOHANG
 # include <fcntl.h> // for O_CREAT and O_EXCL
 
 typedef struct s_table
