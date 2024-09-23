@@ -6,12 +6,11 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:54:46 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/23 14:19:17 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/23 14:28:23 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-
 
 // checks if the philo has eaten enough, and increments semaphore once if so
 void	meal_check(t_table *philo)
