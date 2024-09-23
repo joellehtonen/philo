@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 16:44:32 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/23 13:57:16 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/23 14:20:10 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,6 @@ void	free_and_exit(t_table *table, int error)
 void	child_cleanup(t_table *philo)
 {
 	pthread_join(philo->monitor, NULL);
-	pthread_join(philo->secondary_monitor, NULL);
 	close_semaphores(philo);
-	free_memory(philo);
 	exit(0);
 }

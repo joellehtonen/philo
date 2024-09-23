@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:55:26 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/23 10:35:02 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/23 14:25:58 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ size_t	think_time(t_table *philo)
 		longer = philo->time_to_eat;
 	else
 		longer = philo->time_to_sleep;
-	duration = (philo->time_to_die - longer) / 20;
+	duration = (philo->time_to_die - longer) / 10;
 	sem_post(philo->lock);
 	if (duration < 0)
 		duration = 0;

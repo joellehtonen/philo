@@ -6,23 +6,12 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:54:46 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/23 13:50:39 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/23 14:19:17 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-void	*check_cleanup(void *data)
-{
-	t_table	*philo;
-
-	philo = (t_table *)data;
-	sem_wait(philo->start_cleanup);
-	sem_wait(philo->lock);
-	philo->exit = true;
-	sem_post(philo->lock);
-	return (NULL);
-}
 
 // checks if the philo has eaten enough, and increments semaphore once if so
 void	meal_check(t_table *philo)
@@ -89,16 +78,7 @@ void	create_philo_monitor_threads(t_table *philo)
 		sem_wait(philo->lock);
 		printf("Error. Failed to create a philo monitor thread\n");
 		sem_post(philo->lock);
-		time_to_exit(philo);
-		child_cleanup(philo);
-	}
-	if (pthread_create(&philo->secondary_monitor, NULL,
-			&check_cleanup, philo) != 0)
-	{
-		sem_wait(philo->lock);
-		printf("Error. Failed to create a secondary philo monitor thread\n");
-		sem_post(philo->lock);
-		time_to_exit(philo);
+		sem_post(philo->child_finished);
 		child_cleanup(philo);
 	}
 	return ;
