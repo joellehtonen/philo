@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 16:44:32 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/19 15:16:46 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:57:16 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	free_and_exit(t_table *table, int error)
 				i++;
 			}
 		}
+		sem_post(table->lock);
 		pthread_join(table->secondary_monitor, NULL);
 	}
 	close_semaphores(table);

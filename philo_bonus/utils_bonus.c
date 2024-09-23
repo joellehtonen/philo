@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:55:26 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/19 17:29:40 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/23 10:35:02 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void	restless_usleep(t_table *table, size_t time)
 {
 	size_t	wake_up;
-	
+
 	wake_up = timestamp() + time;
 	while (timestamp() < wake_up && check_exit(table) == false)
 	{

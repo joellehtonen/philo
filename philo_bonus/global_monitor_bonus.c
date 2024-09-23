@@ -6,21 +6,20 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:54:46 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/19 17:16:38 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:54:06 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-// increments a semaphore to let other children exit
-// then waits their pids as confirmation
-void	wait_children_to_exit(t_table *table)
+void	kill_all_children(t_table *table)
 {
 	unsigned int	i;
 
 	i = 0;
 	while (i < table->philos_total)
 	{
+		kill(table->pid[i], SIGKILL);
 		waitpid(table->pid[i], NULL, 0);
 		i++;
 	}
@@ -45,7 +44,7 @@ static void	*belly_full_check(void *data)
 	sem_wait(table->lock);
 	table->all_full = true;
 	sem_post(table->lock);
-	time_to_exit(table);
+	sem_post(table->child_finished);
 	return (NULL);
 }
 
@@ -58,8 +57,8 @@ static void	create_second_monitor(t_table *table)
 		sem_wait(table->lock);
 		printf("Error. Failed to create a secondary monitor thread\n");
 		sem_post(table->lock);
-		time_to_exit(table);
-		child_cleanup(table);
+		kill_all_children(table);
+		free_and_exit(table, 1);
 	}
 }
 
@@ -73,7 +72,7 @@ void	global_monitor_routine(t_table *table)
 	while (true)
 	{
 		sem_wait(table->child_finished);
-		wait_children_to_exit(table);
+		kill_all_children(table);
 		free_and_exit(table, 0);
 	}
 	return ;

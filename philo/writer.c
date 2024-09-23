@@ -6,13 +6,13 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:52:31 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/20 09:43:44 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/23 10:35:49 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-size_t	timestamp()
+size_t	timestamp(void)
 {
 	struct timeval	time;
 	size_t			milliseconds;

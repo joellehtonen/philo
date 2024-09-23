@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:54:46 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/19 17:28:06 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:50:39 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	meal_check(t_table *philo)
 		philo->signal_sent = true;
 	}
 	return ;
-} 
+}
 
 // checks if it's been too long since philo's last meal
 // if so, alters a variable to exit
@@ -51,9 +51,8 @@ static void	welfare_check(t_table *philo)
 		sem_post(philo->lock);
 		state_writer(philo, philo->philo_number, "died");
 		sem_wait(philo->lock);
+		sem_post(philo->child_finished);
 		philo->exit = true;
-		sem_post(philo->lock);
-		time_to_exit(philo);
 	}
 	else
 		sem_post(philo->lock);

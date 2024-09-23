@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:16:13 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/19 17:28:00 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:53:51 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,7 @@ static int	create_processes(t_table *table)
 		pid = fork();
 		if (pid < 0)
 		{
-			time_to_exit(table);
-			wait_children_to_exit(table);
+			kill_all_children(table);
 			free_and_exit(table, 1);
 		}
 		else if (pid > 0)
