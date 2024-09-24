@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:41:15 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/23 14:23:48 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/24 09:51:57 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	*routine(void *data)
 	{
 		eating(philo);
 		sleeping(philo);
-		thinking(philo, think_time(philo));
+		thinking(philo, 10);
 	}
 	return (NULL);
 }

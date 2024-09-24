@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:55:26 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/23 14:25:58 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/24 09:53:08 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,23 +45,6 @@ int	check_exit(t_table *philo)
 	exit_value = philo->exit;
 	sem_post(philo->lock);
 	return (exit_value);
-}
-
-size_t	think_time(t_table *philo)
-{
-	long		duration;
-	long		longer;
-
-	sem_wait(philo->lock);
-	if (philo->time_to_eat >= philo->time_to_sleep)
-		longer = philo->time_to_eat;
-	else
-		longer = philo->time_to_sleep;
-	duration = (philo->time_to_die - longer) / 10;
-	sem_post(philo->lock);
-	if (duration < 0)
-		duration = 0;
-	return ((size_t)duration);
 }
 
 long long	ft_atoll(const char *str)
