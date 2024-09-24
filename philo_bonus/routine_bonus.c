@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:41:15 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/24 09:51:57 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/24 10:01:28 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ static void	eating(t_table *philo)
 	return ;
 }
 
-// creates a monitor thread to check wellbeing
-// then each philo thinks for an increasing amount to help with syncing
-// then philos start the routine
+// philos wait for semaphore to start the routine
+// then they create a monitor thread to check wellbeing
+// then they start the routine, even-numbered by thinking
 void	*routine(void *data)
 {
 	t_table			*philo;
