@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 13:22:50 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/16 16:12:24 by jlehtone         ###   ########.fr       */
+/*   Updated: 2024/09/26 13:57:20 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,11 @@ void	restless_usleep(t_table *table, size_t time)
 	{
 		usleep(100000);
 		time -= 100000;
+		if (time < 100000)
+		{
+			usleep(time);
+			time = 0;
+		}
 	}
 }
 
