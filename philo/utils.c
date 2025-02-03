@@ -6,7 +6,7 @@
 /*   By: jlehtone <jlehtone@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 13:22:50 by jlehtone          #+#    #+#             */
-/*   Updated: 2024/09/26 13:57:20 by jlehtone         ###   ########.fr       */
+/*   Updated: 2025/02/03 11:54:34 by jlehtone         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,12 @@ void	release_forks(t_philo *philo)
 // "sleep" which periodically checks if it's time to exit
 void	restless_usleep(t_table *table, size_t time)
 {
-	time = time * 1000;
-	while (time > 0 && check_exit(table) == false)
+	size_t	wake_up;
+
+	wake_up = timestamp() + time;
+	while (timestamp() < wake_up && check_exit(table) == false)
 	{
-		usleep(100000);
-		time -= 100000;
-		if (time < 100000)
-		{
-			usleep(time);
-			time = 0;
-		}
+		usleep(100);
 	}
 }
 
